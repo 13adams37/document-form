@@ -1,16 +1,12 @@
+<script setup></script>
+
 <template>
-  <transition name="slide" mode="out-in">
-    <router-view></router-view>
-  </transition>
+  <router-view v-slot="{ Component }">
+    <transition name="slide" mode="out-in">
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>
-
-<script>
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "App",
-});
-</script>
 
 <style>
 .slide-enter-active {

@@ -1,9 +1,7 @@
 import { app, screen, BrowserWindow } from "electron";
-// import {
-//   setupTitlebar,
-//   attachTitlebarToWindow,
-// } from "custom-electron-titlebar/main";
 import { initialize, enable } from "@electron/remote/main";
+// import { dialog, ipcMain } from "electron";
+// import fs from "fs";
 import path from "path";
 import os from "os";
 
@@ -38,11 +36,24 @@ function createWindow() {
     frame: false,
     webPreferences: {
       sandbox: false,
+      webSecurity: true,
+      nodeIntegration: true,
       // contextIsolation: true,
       // More info: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },
   });
+
+  // ipcMain.handle("dialog:openDirectory", async () => {
+  //   const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+  //     properties: ["openDirectory"],
+  //   });
+  //   if (canceled) {
+  //     return;
+  //   } else {
+  //     return filePaths[0];
+  //   }
+  // });
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.maximize();

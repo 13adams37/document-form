@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from "vue";
-import PageLink from "components/PageLink.vue";
-import { useQuasar } from "quasar";
+import { useLayoutStore } from "stores/layoutStore";
+
+import PageLink from "components/common/PageLink.vue";
+import ToolBar from "components/globals/ToolBar.vue";
 
 const linksList = [
   {
@@ -18,108 +20,61 @@ const linksList = [
   },
   {
     title: "Использовать",
-    caption: "Создание объекта по форме",
+    caption: "Использование по форме",
     icon: "description",
     to: "/CreateObjectPage",
   },
   {
     title: "Изменить",
-    caption: "Измение содержания объекта",
+    caption: "Измение содержания",
     icon: "edit_document",
     to: "/EditObjectPage",
   },
-  // tms
+  // tms link
 ];
 
-const leftDrawerOpen = ref(false);
+const drawerStore = useLayoutStore();
 const pageLinks = ref(linksList);
-const darkMode = ref(false);
-const $q = useQuasar();
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
-}
-
-function toggleDarkMode() {
-  $q.dark.toggle();
-}
-
-function minimize() {
-  if (process.env.MODE === "electron") {
-    window.myWindowAPI.minimize();
-  }
-}
-
-function toggleMaximize() {
-  if (process.env.MODE === "electron") {
-    window.myWindowAPI.toggleMaximize();
-  }
-}
-
-function closeApp() {
-  if (process.env.MODE === "electron") {
-    window.myWindowAPI.close();
-  }
-}
 </script>
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="q-electron-drag title__bar">
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title> Проект Сатурна </q-toolbar-title>
-
-        <q-toggle
-          class="q-mr-sm q-electron-drag--exception"
-          dense
-          v-model="darkMode"
-          @click="toggleDarkMode"
-          color="grey-9"
-          label="Тёмный режим"
-        />
-
-        <q-btn dense flat icon="minimize" @click="minimize" />
-        <q-btn dense flat icon="crop_square" @click="toggleMaximize" />
-        <q-btn dense flat icon="close" @click="closeApp" />
-      </q-toolbar>
-    </q-header>
-
+    <ToolBar />
+    <!-- toolbar -->
     <q-drawer
-      v-model="leftDrawerOpen"
+      v-model="drawerStore.leftDrawerOpen"
       show-if-above
       behavior="mobile"
       class="q-electron-drag--exception q__drawer"
     >
       <q-list>
         <q-item-label header> Возможности </q-item-label>
-
         <PageLink v-for="link in pageLinks" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
 
     <q-page-container class="">
-      <transition name="slide" mode="out-in">
-        <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component }">
+        <transition name="slide" mode="out-in">
           <component :is="Component" />
-        </router-view>
-      </transition>
+        </transition>
+      </router-view>
     </q-page-container>
+
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[18, 18]"
+      v-if="$route.path !== '/'"
+    >
+      <q-btn fab icon="home" class="title__bar" to="/" />
+    </q-page-sticky>
   </q-layout>
 </template>
 
-<style>
+<style lang="scss">
 body.body--light {
   color: #202020;
-  background-color: #f3f3f3;
+  background-color: $light-body;
 }
 
 .body--light .title__bar {
@@ -128,23 +83,23 @@ body.body--light {
 }
 
 .body--light main .q-btn {
-  color: #ffffff;
-  background-color: #d2d2d2;
+  color: #353333;
+  background-color: #e0dedc;
 }
 
 .body--light .q__drawer {
-  background-color: #f3f3f3;
+  background-color: $light-drawer;
+}
+
+.body--light .q__drawer .q-separator {
+  background-color: #dddddd;
 }
 
 body.body--dark {
-  color: #e2e2e2;
+  color: $light-body;
 }
 
-.body--dark .title__bar {
-  color: #e4e4d5;
-  background-color: #252526;
-}
-
+.body--dark .title__bar,
 .body--dark main .q-btn {
   color: #e4e4d5;
   background-color: #252526;
@@ -152,6 +107,10 @@ body.body--dark {
 
 .body--dark .q__drawer {
   background-color: #333333;
+}
+
+.body--dark .q__drawer .q-separator {
+  background-color: #434040;
 }
 
 .body--dark .q__drawer .q-item__section {

@@ -28,15 +28,11 @@
  * }
  */
 
-// import { Titlebar } from "custom-electron-titlebar";
-
-// window.addEventListener("DOMContentLoaded", () => {
-//   // Title bar implementation
-//   new Titlebar();
-// });
-
 import { contextBridge } from "electron";
-import { BrowserWindow } from "@electron/remote";
+import { BrowserWindow, dialog } from "@electron/remote";
+import fs from "fs";
+
+// import { ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("myWindowAPI", {
   minimize() {
@@ -55,5 +51,24 @@ contextBridge.exposeInMainWorld("myWindowAPI", {
 
   close() {
     BrowserWindow.getFocusedWindow().close();
+  },
+
+  // selectFolder: () => ipcRenderer.invoke("dialog:openDirectory"),
+
+  saveFile(dataToSave, fileName) {
+    var options = {
+      title: "Сохранить файл",
+      defaultPath: fileName,
+      buttonLabel: "Сохранить",
+
+      filters: [
+        { name: "json", extensions: ["json"] },
+        { name: "All Files", extensions: ["*"] },
+      ],
+    };
+
+    dialog.showSaveDialog(null, options).then(({ filePath }) => {
+      fs.writeFileSync(filePath, dataToSave);
+    });
   },
 });
