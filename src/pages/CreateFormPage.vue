@@ -62,10 +62,31 @@ function save() {
   }; //rework var and paths Arrays
 
   if (process.env.MODE === "electron") {
-    window.myWindowAPI.saveFile(
-      JSON.stringify(data),
-      formCreate.formName.trim().split(" ").join("")
-    );
+    window.myWindowAPI
+      .saveFile(
+        JSON.stringify(data),
+        formCreate.formName.trim().split(" ").join("")
+      )
+      .then((result) => {
+        if (result) {
+          $q.notify({
+            message: "Файл успешно сохранён",
+            color: "none",
+          });
+        } else {
+          $q.notify({
+            message: "Ошибка при сохранении",
+            color: "none",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        $q.notify({
+          message: "Непредвиденная ошибка при сохранении",
+          color: "none",
+        });
+      });
   }
 }
 

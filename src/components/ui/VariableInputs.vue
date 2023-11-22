@@ -1,12 +1,7 @@
 <script setup>
 import { useVariablesFillStore } from "src/stores/variablesFillStore";
-import { onUnmounted } from "vue";
 
 const { variables } = useVariablesFillStore();
-
-onUnmounted(() => {
-  useVariablesFillStore().reset(["variables"]);
-});
 </script>
 
 <template>
@@ -18,13 +13,19 @@ onUnmounted(() => {
     <span class="input__text text-center text-h5 q-pb-sm">
       {{ variable.text }}</span
     >
-    <q-input v-model="variable.value" debounce="200" class="q-mb-md" outlined />
+    <q-input
+      v-model="variable.value"
+      debounce="200"
+      class="q-mb-md"
+      outlined
+      autogrow
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
 body.screen--xs .q-field,
-.input__text {
+body.screen--xs .input__text {
   width: 100%;
 }
 

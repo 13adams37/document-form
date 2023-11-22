@@ -2,7 +2,10 @@
 import DragDropUploader from "components/ui/DragDropUploader.vue";
 import VariableInputs from "src/components/ui/VariableInputs.vue";
 import { useVariablesFillStore } from "src/stores/variablesFillStore";
-import { ref, reactive, computed, watch } from "vue";
+import { ref, watch, onUnmounted } from "vue";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
 // import form data, draw fields v-for, get datas from fields, exec ts Word filler, show progressbar, show information window.
 
 // all center "column justify-center items-center content-around"
@@ -14,23 +17,18 @@ const { variables } = useVariablesFillStore();
 // after uploading validate => set loading state, after loading set page loading state, transition after loading is done.
 // upload file => set uploading state => validate ! throw error text => prepare dom elements => render dom elements => transition.
 
-// низкая читаемость инпутов, нужно исправить
-
-// function clearVariables() {
-//   console.log("working");
-//   console.log(variables.value);
-//   formData.value = null;
-// }
+// низкая читаемость инпутов, нужно исправить?
 
 function replaceVariables() {
   console.log(variables.value);
   console.log(formData.value.paths);
-  formData.value = null;
+  formData.value = null; // to clear
   // replaceVariablesInDocuments ...
 }
 
 function addKeyValue(list, key, value) {
   var temp = list;
+  console.log("list", list);
   temp.forEach((element) => {
     element[key] = value;
   });
@@ -42,16 +40,27 @@ function readFile(files) {
 
   fr.onload = (e) => {
     const result = JSON.parse(e.target.result);
-    variables.value = addKeyValue(result.variables, "value", "");
+    try {
+      variables.value = addKeyValue(result.variables, "value", "");
+    } catch (error) {
+      $q.notify({
+        message: "Загруженный файл не относится к форме.",
+        color: "none",
+      });
+      return false;
+    }
     delete result["variables"];
     formData.value = result;
-    console.log(formData.value.comment);
   };
   fr.readAsText(files);
 }
 
 watch(uploadedFile, () => {
   readFile(uploadedFile.value);
+});
+
+onUnmounted(() => {
+  useVariablesFillStore().$reset();
 });
 </script>
 

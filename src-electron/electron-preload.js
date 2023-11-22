@@ -31,6 +31,10 @@
 import { contextBridge } from "electron";
 import { BrowserWindow, dialog } from "@electron/remote";
 import fs from "fs";
+import { data } from "autoprefixer";
+// import { useQuasar } from "quasar";
+
+// const $q = useQuasar();
 
 // import { ipcRenderer } from "electron";
 
@@ -55,8 +59,8 @@ contextBridge.exposeInMainWorld("myWindowAPI", {
 
   // selectFolder: () => ipcRenderer.invoke("dialog:openDirectory"),
 
-  saveFile(dataToSave, fileName) {
-    var options = {
+  async saveFile(dataToSave, fileName) {
+    const { filePath } = await dialog.showSaveDialog(null, {
       title: "Сохранить файл",
       defaultPath: fileName,
       buttonLabel: "Сохранить",
@@ -65,10 +69,12 @@ contextBridge.exposeInMainWorld("myWindowAPI", {
         { name: "json", extensions: ["json"] },
         { name: "All Files", extensions: ["*"] },
       ],
-    };
-
-    dialog.showSaveDialog(null, options).then(({ filePath }) => {
-      fs.writeFileSync(filePath, dataToSave);
     });
+    try {
+      fs.writeFileSync(filePath, dataToSave);
+      return true;
+    } catch (error) {
+      return false;
+    }
   },
 });

@@ -9,12 +9,10 @@ const editedIndex = ref(-1);
 const nameRef = ref(null);
 const textRef = ref(null);
 
-const defaultItem = ref([
-  {
-    name: "",
-    text: "",
-  },
-]);
+const defaultItem = ref({
+  name: "",
+  text: "",
+});
 
 const editedItem = ref({
   name: "",
@@ -56,6 +54,7 @@ function addRow() {
     }
     close();
   }
+  // validate dubs variables
 }
 
 function deleteItem(item) {
@@ -129,6 +128,7 @@ function close() {
                     v-model="editedItem.name"
                     label="Название переменной"
                     :rules="[(val) => !!val || 'Поле обязательно']"
+                    autogrow
                   />
 
                   <q-space />
@@ -139,6 +139,7 @@ function close() {
                     v-model="editedItem.text"
                     label="Отображаемый текст"
                     :rules="[(val) => !!val || 'Поле обязательно']"
+                    autogrow
                   />
                 </div>
               </q-card-section>
@@ -161,13 +162,13 @@ function close() {
           <q-td key="name" :props="props">
             {{ props.row.name }}
             <q-popup-edit v-model="props.row.name">
-              <q-input v-model="props.row.name" dense autofocus />
+              <q-input v-model="props.row.name" dense autofocus autogrow />
             </q-popup-edit>
           </q-td>
           <q-td key="text" :props="props">
             {{ props.row.text }}
             <q-popup-edit v-model="props.row.text">
-              <q-input v-model="props.row.text" dense autofocus />
+              <q-input v-model="props.row.text" dense autofocus autogrow />
             </q-popup-edit>
           </q-td>
           <q-td key="actions" :props="props">
@@ -186,12 +187,21 @@ function close() {
 </template>
 
 <style>
-.q-table__top {
+.q-table__container .q-table__top {
   justify-content: center;
 }
 
 .body--light .q-table__card {
   color: #00000099;
   background-color: #e3e3e3;
+}
+
+tr > th.text-center {
+  white-space: break-spaces;
+}
+
+tr > td.text-center {
+  white-space: break-spaces;
+  word-break: break-all;
 }
 </style>
