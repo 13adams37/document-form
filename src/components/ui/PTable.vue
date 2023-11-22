@@ -1,4 +1,5 @@
 <script setup>
+// ptable is not used
 import { ref } from "vue";
 import { useQuasar } from "quasar";
 import { usePathTableStore } from "stores/pathTableStore";

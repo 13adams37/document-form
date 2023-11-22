@@ -22,13 +22,13 @@ const linksList = [
     title: "Использовать",
     caption: "Использование по форме",
     icon: "description",
-    to: "/CreateObjectPage",
+    to: "/UseFormPage",
   },
   {
     title: "Изменить",
     caption: "Измение содержания",
     icon: "edit_document",
-    to: "/EditObjectPage",
+    to: "/EditUsedFormPage",
   },
   // tms link
 ];
@@ -73,7 +73,7 @@ const pageLinks = ref(linksList);
 
 <style lang="scss">
 body.body--light {
-  color: #202020;
+  color: $light-text;
   background-color: $light-body;
 }
 

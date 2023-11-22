@@ -46,7 +46,7 @@ function save() {
     var varArray = [];
     tableData.forEach((data) => varArray.push(data));
     return varArray;
-  }
+  } // need to rework
 
   function getPaths() {
     var pathsArray = [];
@@ -59,9 +59,8 @@ function save() {
     comment: formCreate.formComment,
     variables: getTableData(),
     paths: getPaths(),
-  };
+  }; //rework var and paths Arrays
 
-  console.log(JSON.stringify(data));
   if (process.env.MODE === "electron") {
     window.myWindowAPI.saveFile(
       JSON.stringify(data),
@@ -84,6 +83,7 @@ watch(tableData, () => {
 
 onUnmounted(() => {
   useVariablesTableStore().reset(["tableData"]);
+  console.log("variables reset");
 });
 </script>
 
@@ -138,13 +138,13 @@ onUnmounted(() => {
                 value ? allowedPanels.add('name') : allowedPanels.delete('name')
             "
             clearable
-            filled
+            outlined
           />
 
           <q-input
             label="Комментарий"
             v-model="formCreate.formComment"
-            filled
+            outlined
             autogrow
           />
 

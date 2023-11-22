@@ -7,7 +7,9 @@ const routes = [
   {
     path: "/CreateFormPage",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/CreateFormPage.vue") }],
+    children: [
+      { path: "", component: () => import("pages/CreateFormPage.vue") },
+    ],
   },
   {
     path: "/EditFormPage",
@@ -15,14 +17,16 @@ const routes = [
     children: [{ path: "", component: () => import("pages/EditFormPage.vue") }],
   },
   {
-    path: "/CreateObjectPage",
+    path: "/UseFormPage",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/CreateObjectPage.vue") }],
+    children: [{ path: "", component: () => import("pages/UseFormPage.vue") }],
   },
   {
-    path: "/EditObjectPage",
+    path: "/EditUsedFormPage",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/EditObjectPage.vue") }],
+    children: [
+      { path: "", component: () => import("pages/EditUsedFormPage.vue") },
+    ],
   },
   {
     path: "/:catchAll(.*)*",

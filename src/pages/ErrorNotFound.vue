@@ -7,15 +7,15 @@
 
       <div class="text-h2" style="opacity: 0.4">Тут ничего нет...</div>
 
-      <!-- <q-btn
+      <q-btn
         class="q-mt-xl"
         color="white"
         text-color="blue"
         unelevated
         to="/"
-        label="Go Home"
+        label="На главную"
         no-caps
-      /> -->
+      />
     </div>
   </div>
 </template>
