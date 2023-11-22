@@ -82,8 +82,7 @@ watch(tableData, () => {
 });
 
 onUnmounted(() => {
-  useVariablesTableStore().reset(["tableData"]);
-  console.log("variables reset");
+  useVariablesTableStore().$reset();
 });
 </script>
 
