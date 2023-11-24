@@ -1,14 +1,11 @@
 <script setup>
-import DragDropUploader from "components/ui/DragDropUploader.vue";
-import VariableInputs from "src/components/ui/VariableInputs.vue";
-import { useVariablesFillStore } from "src/stores/variablesFillStore";
-import { ref, watch, onUnmounted } from "vue";
-import { useQuasar } from "quasar";
+import DragDropUploader from 'components/ui/DragDropUploader.vue';
+import VariableInputs from 'src/components/ui/VariableInputs.vue';
+import { useVariablesFillStore } from 'src/stores/variablesFillStore';
+import { ref, watch, onUnmounted } from 'vue';
+import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
-// import form data, draw fields v-for, get datas from fields, exec ts Word filler, show progressbar, show information window.
-
-// all center "column justify-center items-center content-around"
 
 const uploadedFile = ref(null);
 const formData = ref(null);
@@ -17,18 +14,36 @@ const { variables } = useVariablesFillStore();
 // after uploading validate => set loading state, after loading set page loading state, transition after loading is done.
 // upload file => set uploading state => validate ! throw error text => prepare dom elements => render dom elements => transition.
 
-// низкая читаемость инпутов, нужно исправить?
-
 function replaceVariables() {
-  console.log(variables.value);
-  console.log(formData.value.paths);
-  formData.value = null; // to clear
-  // replaceVariablesInDocuments ...
+  window.myWindowAPI
+    .variablesFilePatcher(
+      JSON.stringify(variables.value),
+      JSON.stringify(formData.value.paths)
+    )
+    .then((result) => {
+      if (result) {
+        $q.notify({
+          message: 'Файл успешно сохранён',
+          color: 'none',
+        });
+      } else {
+        $q.notify({
+          message: 'Ошибка при сохранении',
+          color: 'none',
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      $q.notify({
+        message: 'Непредвиденная ошибка при сохранении',
+        color: 'none',
+      });
+    });
 }
 
 function addKeyValue(list, key, value) {
   var temp = list;
-  console.log("list", list);
   temp.forEach((element) => {
     element[key] = value;
   });
@@ -41,15 +56,15 @@ function readFile(files) {
   fr.onload = (e) => {
     const result = JSON.parse(e.target.result);
     try {
-      variables.value = addKeyValue(result.variables, "value", "");
+      variables.value = addKeyValue(result.variables, 'value', '');
     } catch (error) {
       $q.notify({
-        message: "Загруженный файл не относится к форме.",
-        color: "none",
+        message: 'Загруженный файл не относится к форме.',
+        color: 'none',
       });
       return false;
     }
-    delete result["variables"];
+    delete result['variables'];
     formData.value = result;
   };
   fr.readAsText(files);

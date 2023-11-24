@@ -1,8 +1,8 @@
 <script setup>
 // ptable is not used
-import { ref } from "vue";
-import { useQuasar } from "quasar";
-import { usePathTableStore } from "stores/pathTableStore";
+import { ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { usePathTableStore } from 'stores/pathTableStore';
 
 const $q = useQuasar();
 const show_dialog = ref(false);
@@ -11,12 +11,12 @@ const pathRef = ref(null);
 
 const defaultItem = ref([
   {
-    path: "",
+    path: '',
   },
 ]);
 
 const editedItem = ref({
-  path: "",
+  path: '',
 });
 
 // const { tableData } = useVariablesTableStore();
@@ -24,16 +24,16 @@ const { pathData } = usePathTableStore();
 
 const columns = [
   {
-    name: "path",
+    name: 'path',
     required: true,
-    label: "Путь",
-    align: "center",
+    label: 'Путь',
+    align: 'center',
     field: (row) => row.path,
   },
   {
-    name: "actions",
-    label: "Действия",
-    field: "actions",
+    name: 'actions',
+    label: 'Действия',
+    field: 'actions',
   },
 ];
 
@@ -51,17 +51,17 @@ function addRow() {
 
 function deleteItem(item) {
   $q.dialog({
-    title: "Подтверждение",
+    title: 'Подтверждение',
     message: `Вы действительно хотите удалить ${item.path}?`,
     ok: {
       flat: true,
-      color: "none",
-      label: "Да",
+      color: 'none',
+      label: 'Да',
     },
     cancel: {
       flat: true,
-      color: "none",
-      label: "Нет",
+      color: 'none',
+      label: 'Нет',
     },
     persistent: true,
   }).onOk(() => {

@@ -1,5 +1,5 @@
 <script setup>
-import { useVariablesFillStore } from "src/stores/variablesFillStore";
+import { useVariablesFillStore } from 'src/stores/variablesFillStore';
 
 const { variables } = useVariablesFillStore();
 </script>

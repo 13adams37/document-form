@@ -5,3 +5,6 @@
 /node_modules
 .eslintrc.js
 /quasar.config.*.temporary.compiled*
+/src/components
+/src/pages
+/src/layouts

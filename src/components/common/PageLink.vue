@@ -1,9 +1,21 @@
 <script setup>
-const props = defineProps({
-  title: String,
-  caption: String,
-  to: String,
-  icon: String,
+defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  caption: {
+    type: String,
+    required: true,
+  },
+  to: {
+    type: String,
+    required: true,
+  },
+  icon: {
+    type: String,
+    required: true,
+  },
 });
 </script>
 

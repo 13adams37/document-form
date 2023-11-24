@@ -1,7 +1,7 @@
 <script setup>
-import { useQuasar } from "quasar";
-import { ref } from "vue";
-import { useLayoutStore } from "stores/layoutStore";
+import { useQuasar } from 'quasar';
+import { ref } from 'vue';
+import { useLayoutStore } from 'stores/layoutStore';
 
 const store = useLayoutStore();
 const darkMode = ref(false);
@@ -12,19 +12,19 @@ function toggleDarkMode() {
 }
 
 function minimize() {
-  if (process.env.MODE === "electron") {
+  if (process.env.MODE === 'electron') {
     window.myWindowAPI.minimize();
   }
 }
 
 function toggleMaximize() {
-  if (process.env.MODE === "electron") {
+  if (process.env.MODE === 'electron') {
     window.myWindowAPI.toggleMaximize();
   }
 }
 
 function closeApp() {
-  if (process.env.MODE === "electron") {
+  if (process.env.MODE === 'electron') {
     window.myWindowAPI.close();
   }
 }
@@ -45,12 +45,12 @@ function closeApp() {
       <q-toolbar-title> Форма </q-toolbar-title>
 
       <q-toggle
+        v-model="darkMode"
         class="q-mr-sm q-electron-drag--exception"
         dense
-        v-model="darkMode"
-        @click="toggleDarkMode"
         color="grey-9"
         label="Тёмный режим"
+        @click="toggleDarkMode"
       />
 
       <q-btn dense flat icon="minimize" @click="minimize" />

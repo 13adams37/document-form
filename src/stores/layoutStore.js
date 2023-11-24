@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useLayoutStore = defineStore("leftDrawerOpen", {
+export const useLayoutStore = defineStore('leftDrawerOpen', {
   state: () => ({
     leftDrawerOpen: false,
   }),
