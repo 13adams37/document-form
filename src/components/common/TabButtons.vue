@@ -3,7 +3,7 @@
 const props = defineProps({
   displayButtons: { type: String, required: true },
 });
-const emits = defineEmits(["prev", "next"]);
+const emits = defineEmits(['prev', 'next']);
 </script>
 
 <template>

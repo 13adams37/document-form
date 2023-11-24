@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch } from 'vue';
 
 const { modelValue } = defineProps({
   modelValue: String,
@@ -9,10 +9,10 @@ const { modelValue } = defineProps({
 
 const value = ref(modelValue);
 
-const emits = defineEmits(["update:modelValue"]);
+const emits = defineEmits(['update:modelValue']);
 
 watch(value, () => {
-  emits("update:modelValue", value.value);
+  emits('update:modelValue', value.value);
 });
 </script>
 

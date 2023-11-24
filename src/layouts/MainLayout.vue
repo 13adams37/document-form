@@ -1,34 +1,34 @@
 <script setup>
-import { ref } from "vue";
-import { useLayoutStore } from "stores/layoutStore";
+import { ref } from 'vue';
+import { useLayoutStore } from 'stores/layoutStore';
 
-import PageLink from "components/common/PageLink.vue";
-import ToolBar from "components/globals/ToolBar.vue";
+import PageLink from 'components/common/PageLink.vue';
+import ToolBar from 'components/globals/ToolBar.vue';
 
 const linksList = [
   {
-    title: "Создать",
-    caption: "Создание формы",
-    icon: "post_add",
-    to: "/CreateFormPage",
+    title: 'Создать',
+    caption: 'Создание формы',
+    icon: 'post_add',
+    to: '/CreateFormPage',
   },
   {
-    title: "Редактировать",
-    caption: "Редактирование формы",
-    icon: "create",
-    to: "/EditFormPage",
+    title: 'Редактировать',
+    caption: 'Редактирование формы',
+    icon: 'create',
+    to: '/EditFormPage',
   },
   {
-    title: "Использовать",
-    caption: "Использование по форме",
-    icon: "description",
-    to: "/UseFormPage",
+    title: 'Использовать',
+    caption: 'Использование по форме',
+    icon: 'description',
+    to: '/UseFormPage',
   },
   {
-    title: "Изменить",
-    caption: "Измение содержания",
-    icon: "edit_document",
-    to: "/EditUsedFormPage",
+    title: 'Изменить',
+    caption: 'Измение содержания',
+    icon: 'edit_document',
+    to: '/EditUsedFormPage',
   },
   // tms link
 ];
@@ -62,9 +62,9 @@ const pageLinks = ref(linksList);
     </q-page-container>
 
     <q-page-sticky
+      v-if="$route.path !== '/'"
       position="bottom-right"
       :offset="[18, 18]"
-      v-if="$route.path !== '/'"
     >
       <q-btn fab icon="home" class="title__bar" to="/" />
     </q-page-sticky>

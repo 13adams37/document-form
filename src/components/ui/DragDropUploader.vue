@@ -1,7 +1,7 @@
 <script setup>
-import { watch, ref, shallowRef } from "vue";
+import { watch, ref, shallowRef } from 'vue';
 
-const emits = defineEmits(["update:modelValue"]);
+const emits = defineEmits(['update:modelValue']);
 const value = ref(modelValue);
 const newLabel = shallowRef();
 
@@ -14,11 +14,11 @@ const { modelValue } = defineProps({
 const uploadFile = (e) => {
   const [file] = e.target.files;
   value.value = file;
-  newLabel.value = "Загружен файл" + "\n" + value.value.name;
+  newLabel.value = 'Загружен файл' + '\n' + value.value.name;
 };
 
 watch(value, () => {
-  emits("update:modelValue", value.value);
+  emits('update:modelValue', value.value);
 });
 </script>
 

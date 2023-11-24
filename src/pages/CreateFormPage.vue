@@ -1,14 +1,14 @@
 <script setup>
-import { reactive, ref, watch, onUnmounted } from "vue";
-import { useVariablesTableStore } from "src/stores/variablesTableStore";
-import { useQuasar } from "quasar";
-import TabButtons from "components/common/TabButtons.vue";
-import VTable from "components/ui/VTable.vue";
+import { reactive, ref, watch, onUnmounted } from 'vue';
+import { useVariablesTableStore } from 'src/stores/variablesTableStore';
+import { useQuasar } from 'quasar';
+import TabButtons from 'components/common/TabButtons.vue';
+import VTable from 'components/ui/VTable.vue';
 
 const formCreate = reactive({
-    panelName: "name",
-    formName: "",
-    formComment: "",
+    panelName: 'name',
+    formName: '',
+    formComment: '',
   }),
   files = ref([]),
   tabPanel = ref(null),
@@ -25,17 +25,15 @@ function goNextTab() {
 
   if (allowedPanels.has(panelName)) {
     tabPanel.value.next();
-  } else if (panelName === "name") {
+  } else if (panelName === 'name') {
     nameRef.value.validate();
-  } else if (panelName === "content") {
-    $q.dialog({
-      title: "Ошибка",
-      message: "Нет данных",
-      color: "none",
-      class: "text-center",
+  } else if (panelName === 'content') {
+    $q.notify({
+      message: 'Нет данных',
+      color: 'none',
     });
   } else {
-    throw new Error("Unknown tab.");
+    throw new Error('Unknown tab.');
   }
 }
 
@@ -61,30 +59,30 @@ function save() {
     paths: getPaths(),
   }; //rework var and paths Arrays
 
-  if (process.env.MODE === "electron") {
+  if (process.env.MODE === 'electron') {
     window.myWindowAPI
       .saveFile(
         JSON.stringify(data),
-        formCreate.formName.trim().split(" ").join("")
+        formCreate.formName.trim().split(' ').join('')
       )
       .then((result) => {
         if (result) {
           $q.notify({
-            message: "Файл успешно сохранён",
-            color: "none",
+            message: 'Файл успешно сохранён',
+            color: 'none',
           });
         } else {
           $q.notify({
-            message: "Ошибка при сохранении",
-            color: "none",
+            message: 'Ошибка при сохранении',
+            color: 'none',
           });
         }
       })
       .catch((err) => {
         console.log(err);
         $q.notify({
-          message: "Непредвиденная ошибка при сохранении",
-          color: "none",
+          message: 'Непредвиденная ошибка при сохранении',
+          color: 'none',
         });
       });
   }
@@ -94,11 +92,11 @@ watch(tableData, () => {
   if (tableData.length) {
     tableData.forEach((value) => {
       value.name && value.text
-        ? allowedPanels.add("content")
-        : allowedPanels.delete("content");
+        ? allowedPanels.add('content')
+        : allowedPanels.delete('content');
     });
   } else {
-    allowedPanels.delete("content");
+    allowedPanels.delete('content');
   }
 });
 

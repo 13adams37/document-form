@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useVariablesTableStore = defineStore("tableData", {
+export const useVariablesTableStore = defineStore('tableData', {
   state: () => ({
     tableData: [],
   }),

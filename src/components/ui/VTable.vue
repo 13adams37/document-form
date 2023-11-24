@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from "vue";
-import { useQuasar } from "quasar";
-import { useVariablesTableStore } from "stores/variablesTableStore";
+import { ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { useVariablesTableStore } from 'stores/variablesTableStore';
 
 const $q = useQuasar();
 const show_dialog = ref(false);
@@ -10,36 +10,36 @@ const nameRef = ref(null);
 const textRef = ref(null);
 
 const defaultItem = ref({
-  name: "",
-  text: "",
+  name: '',
+  text: '',
 });
 
 const editedItem = ref({
-  name: "",
-  text: "",
+  name: '',
+  text: '',
 });
 
 const { tableData } = useVariablesTableStore();
 
 const columns = [
   {
-    name: "name",
+    name: 'name',
     required: true,
-    label: "Название переменной",
-    align: "center",
+    label: 'Название переменной',
+    align: 'center',
     field: (row) => row.name,
   },
   {
-    name: "text",
+    name: 'text',
     required: true,
-    label: "Отображаемый текст",
-    align: "center",
+    label: 'Отображаемый текст',
+    align: 'center',
     field: (row) => row.text,
   },
   {
-    name: "actions",
-    label: "Действия",
-    field: "actions",
+    name: 'actions',
+    label: 'Действия',
+    field: 'actions',
   },
 ];
 
@@ -59,17 +59,18 @@ function addRow() {
 
 function deleteItem(item) {
   $q.dialog({
-    title: "Подтверждение",
+    title: 'Подтверждение',
     message: `Вы действительно хотите удалить ${item.name}?`,
+    class: 'text-center',
     ok: {
       flat: true,
-      color: "none",
-      label: "Да",
+      color: 'none',
+      label: 'Да',
     },
     cancel: {
       flat: true,
-      color: "none",
-      label: "Нет",
+      color: 'none',
+      label: 'Нет',
     },
     persistent: true,
   }).onOk(() => {

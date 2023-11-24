@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const usePathTableStore = defineStore("pathData", {
+export const usePathTableStore = defineStore('pathData', {
   state: () => ({
     pathData: [],
   }),
