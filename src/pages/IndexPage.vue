@@ -18,4 +18,9 @@
   </q-page>
 </template>
 
-<style></style>
+<style scoped>
+h1 {
+  word-break: break-word;
+  text-align: center;
+}
+</style>

@@ -114,4 +114,9 @@ onUnmounted(() => {
 .q-btn {
   width: auto;
 }
+
+h3 {
+  font-size: min(max(1rem, 8vw), 3rem);
+  line-height: normal;
+}
 </style>
