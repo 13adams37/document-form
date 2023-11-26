@@ -59,7 +59,7 @@ function readFile(files) {
       variables.value = addKeyValue(result.variables, 'value', '');
     } catch (error) {
       $q.notify({
-        message: 'Загруженный файл не относится к форме.',
+        message: 'Загруженный файл не относится к форме',
         color: 'none',
       });
       return false;

@@ -11,9 +11,9 @@
 // It's highly recommended to change the default colors
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
-@import url("https://fonts.googleapis.com/css2?family=Onest:wght@100;500;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100;500;700;800;900&display=swap');
 
-$typography-font-family: "Onest", sans-serif !default;
+$typography-font-family: 'Onest', sans-serif !default;
 
 $primary: #1976d2;
 $secondary: #26a69a;
@@ -32,3 +32,4 @@ $light-body: #e2e2e2;
 $light-drawer: #f3f3f3;
 
 $light-text: #202020;
+$dark-text: #cacccd;

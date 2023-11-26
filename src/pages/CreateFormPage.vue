@@ -233,7 +233,8 @@ body.screen--xs .q-tab-panels .q-field {
 }
 
 .body--dark .q-field__control {
-  color: $light-body;
+  // color: $light-body;
+  color: $dark-text;
 }
 
 .body--dark .q-tab-panels {
