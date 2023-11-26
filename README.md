@@ -1,6 +1,6 @@
 # Form
 
-## Based on Quasar framework. Works as Electron desktop, web or mobile application
+## Based on Quasar framework. Works as Electron desktop application, future on web and mobile
 
 Application to ease form filling
 
