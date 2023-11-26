@@ -6,7 +6,7 @@ import * as os from 'os';
 // needed in case process is undefined under Linux
 const platform: string = process.platform || os.platform();
 
-let mainWindow: BrowserWindow;
+let mainWindow: BrowserWindow | null;
 
 initialize();
 
@@ -30,7 +30,7 @@ function createWindow() {
       // More info: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/electron-preload-script
       preload: path.resolve(
         __dirname,
-        process.env.QUASAR_ELECTRON_PRELOAD as string
+        process.env.QUASAR_ELECTRON_PRELOAD!
       ),
     },
   });
@@ -49,12 +49,12 @@ function createWindow() {
   } else {
     // we're on production; no access to devtools pls
     mainWindow.webContents.on('devtools-opened', () => {
-      mainWindow.webContents.closeDevTools();
+      mainWindow?.webContents.closeDevTools();
     });
   }
 
   mainWindow.on('closed', () => {
-    Object.assign(mainWindow, null);
+    mainWindow = null;
   });
 }
 

@@ -91,6 +91,10 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
       String(variables_in)
     ) as IVariables[];
 
+    const documents: string[] = JSON.parse(documents_in) as string[];
+
+    let folderPath: string = '';
+
     function patchSelectedDocument(
       document: string,
       patch_list: PatchDocumentOptions
@@ -115,10 +119,6 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
       return { patches };
     }
 
-    const documents: string[] = JSON.parse(documents_in) as string[];
-
-    let folderPath: string = '';
-
     await dialog
       .showOpenDialog(null!, {
         properties: ['openFile', 'openDirectory'],
@@ -138,8 +138,6 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
     documents.forEach((document) => {
       patchSelectedDocument(document, elementsToPatch);
     });
-
-    console.log('done');
 
     return true;
   },
