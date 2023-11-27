@@ -116,7 +116,7 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
           children: [new TextRun(patch.value)],
         };
       });
-      return { patches };
+      return { patches, keepOriginalStyles: true };
     }
 
     await dialog

@@ -3,6 +3,8 @@ import { useQuasar } from 'quasar';
 import { ref } from 'vue';
 import { useLayoutStore } from 'stores/layoutStore';
 
+// TODO: Store darkMode var in cookies
+
 const store = useLayoutStore();
 const darkMode = ref(false);
 const $q = useQuasar();
