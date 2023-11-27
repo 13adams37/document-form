@@ -59,7 +59,7 @@ function readFile(files) {
       variables.value = addKeyValue(result.variables, 'value', '');
     } catch (error) {
       $q.notify({
-        message: 'Загруженный файл не относится к форме.',
+        message: 'Загруженный файл не относится к форме',
         color: 'none',
       });
       return false;
@@ -113,5 +113,10 @@ onUnmounted(() => {
 <style scoped>
 .q-btn {
   width: auto;
+}
+
+h3 {
+  font-size: min(max(1rem, 8vw), 3rem);
+  line-height: normal;
 }
 </style>

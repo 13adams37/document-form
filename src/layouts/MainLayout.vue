@@ -95,13 +95,26 @@ body.body--light {
   background-color: #dddddd;
 }
 
+.body--light .q__drawer .q-item.q-router-link--active {
+  color: inherit;
+}
+
+.body--light .q__drawer .q-item {
+  color: #575b5f;
+}
+
+.q-dark {
+  color: $dark-text;
+}
+
 body.body--dark {
   color: $light-body;
 }
 
 .body--dark .title__bar,
 .body--dark main .q-btn {
-  color: #e4e4d5;
+  // color: #e4e4d5;
+  color: $dark-text;
   background-color: #252526;
 }
 

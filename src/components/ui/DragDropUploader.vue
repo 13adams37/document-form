@@ -24,7 +24,7 @@ watch(value, () => {
 
 <template>
   <div class="uploader" draggable="true">
-    <label style="white-space: pre" class="uploader__label" :for="id">
+    <label class="uploader__label" :for="id">
       {{ newLabel || label }}
 
       <div class="uploader__content">
@@ -48,7 +48,6 @@ watch(value, () => {
           <!-- или перенесите файл  -->
           <!-- on future -->
         </p>
-        <!-- <p class="uploader__files">SVG, PNG, JPG или GIF</p> -->
       </div>
 
       <input
@@ -73,9 +72,6 @@ watch(value, () => {
   margin-bottom: 20px;
 
   &__label {
-    // background-color: rgb(249, 250, 251);
-    // background-color: $light-body;
-    // border-color: rgb(209, 213, 219);
     border-width: 2px;
     align-items: center;
     flex-direction: column;
@@ -98,7 +94,6 @@ watch(value, () => {
   }
 
   &__icon {
-    // color: rgb(107, 114, 128);
     width: 2rem;
     height: 2rem;
     margin-bottom: 16px;
@@ -106,16 +101,12 @@ watch(value, () => {
   }
 
   &__text {
-    // color: rgb(107, 114, 128);
-
     font-size: 0.875rem;
     line-height: 1.25rem;
     margin-bottom: 8px;
-    // margin: 0;
   }
 
   &__files {
-    // color: rgb(107, 114, 128);
     font-size: 0.75rem;
     line-height: 1rem;
     margin: 0;
@@ -130,7 +121,6 @@ watch(value, () => {
 
 .body--dark .uploader {
   &__label {
-    // border-color: rgb(209, 213, 219);
     border-color: #323232;
   }
 }
