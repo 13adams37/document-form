@@ -28,12 +28,11 @@
  * }
  */
 
-import { FileFilter, contextBridge } from 'electron';
+import { FileFilter, contextBridge, ipcRenderer } from 'electron';
 import { BrowserWindow, dialog } from '@electron/remote';
 import * as fs from 'fs';
 import * as path from 'path';
 import { patchDocument } from 'docx';
-
 import { PatchType, TextRun, PatchDocumentOptions, IPatch } from 'docx';
 
 interface IVariables {
@@ -116,7 +115,7 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
           children: [new TextRun(patch.value)],
         };
       });
-      return { patches };
+      return { patches, keepOriginalStyles: true };
     }
 
     await dialog
@@ -140,5 +139,15 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
     });
 
     return true;
+  },
+
+  getThemeSetting() {
+    return ipcRenderer.invoke('getColorTheme');
+  },
+
+  setThemeSetting(theme: string) {
+    ipcRenderer.invoke('setColorTheme', theme).catch((err) => {
+      console.log(err);
+    });
   },
 });

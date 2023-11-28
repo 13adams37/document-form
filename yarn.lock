@@ -389,6 +389,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/lodash@^4.14.202":
+  version "4.14.202"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.202.tgz#f09dbd2fb082d507178b2f2a5c7e74bd72ff98f8"
+  integrity sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==
+
 "@types/mime@*":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-3.0.2.tgz#c1ae807f13d308ee7511a5b81c74f327028e66e8"
@@ -424,11 +429,11 @@
   integrity sha512-t3rNFBgJRugIhackit2mVcLfF6IRc0JE4oeizPQL8Zrm8n2WY/0wOdpOPhdtG0V9Q2TlW/axbF1MJ6z+Yj/kKQ==
 
 "@types/node@^20.3.1":
-  version "20.8.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.8.7.tgz#ad23827850843de973096edfc5abc9e922492a25"
-  integrity sha512-21TKHHh3eUHIi2MloeptJWALuCu5H7HQTdTrWIFReA8ad+aggoX+lRes3ex7/FtpC+sVUpFMQ+QTfYr74mruiQ==
+  version "20.10.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.10.0.tgz#16ddf9c0a72b832ec4fcce35b8249cf149214617"
+  integrity sha512-D0WfRmU9TQ8I9PFx9Yc+EBHw+vSpIub4IDvQivcp26PtPrdMGAq5SDcpXEo/epqa/DXotVpekHiLNTg3iaKXBQ==
   dependencies:
-    undici-types "~5.25.1"
+    undici-types "~5.26.4"
 
 "@types/qs@*":
   version "6.9.8"
@@ -1369,9 +1374,9 @@ doctrine@^3.0.0:
     esutils "^2.0.2"
 
 docx@^8.2.3:
-  version "8.2.3"
-  resolved "https://registry.yarnpkg.com/docx/-/docx-8.2.3.tgz#9389a7db582afcf27dba68a8e8e54eb692769c15"
-  integrity sha512-Rlr/wPTDh+xQpFew3m4zYQ5OWEZO36HItyPCUbGdicB+ar4zIgseeJdqfcZIY0uQtMSrhGRpSFOTjii7h9cpHw==
+  version "8.2.4"
+  resolved "https://registry.yarnpkg.com/docx/-/docx-8.2.4.tgz#ec8ebb9814e750bfa246d8ee79c14ff1f3cdc0d4"
+  integrity sha512-jnsQgn65v5EH+xv1W6w1s+CrHvfKmbumCB12xjmnNsuiIB2hX1MyKuulPaAcA3x+jKWQeASZghyCVkX9LMYvfg==
   dependencies:
     "@types/node" "^20.3.1"
     jszip "^3.10.1"

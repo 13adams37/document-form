@@ -5,6 +5,11 @@ import { useQuasar } from 'quasar';
 import TabButtons from 'components/common/TabButtons.vue';
 import VTable from 'components/ui/VTable.vue';
 
+// props - formCreate.formName,
+//         formCreate.formComment,
+//          files
+//          tableData -> to pinia store
+
 const formCreate = reactive({
     panelName: 'name',
     formName: '',

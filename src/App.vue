@@ -1,4 +1,12 @@
-<script setup></script>
+<script setup>
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
+
+window.myWindowAPI.getThemeSetting().then((res) => {
+  $q.dark.set(res === 'dark' ? true : false);
+});
+</script>
 
 <template>
   <router-view v-slot="{ Component }">

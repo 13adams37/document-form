@@ -11,9 +11,6 @@ const uploadedFile = ref(null);
 const formData = ref(null);
 const { variables } = useVariablesFillStore();
 
-// after uploading validate => set loading state, after loading set page loading state, transition after loading is done.
-// upload file => set uploading state => validate ! throw error text => prepare dom elements => render dom elements => transition.
-
 function replaceVariables() {
   window.myWindowAPI
     .variablesFilePatcher(
@@ -57,6 +54,7 @@ function readFile(files) {
     const result = JSON.parse(e.target.result);
     try {
       variables.value = addKeyValue(result.variables, 'value', '');
+      // FIXME: fix validation, set addkeyvalue to saver method
     } catch (error) {
       $q.notify({
         message: 'Загруженный файл не относится к форме',

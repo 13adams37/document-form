@@ -4,11 +4,12 @@ import { ref } from 'vue';
 import { useLayoutStore } from 'stores/layoutStore';
 
 const store = useLayoutStore();
-const darkMode = ref(false);
 const $q = useQuasar();
+const darkMode = ref($q.dark.mode);
 
 function toggleDarkMode() {
   $q.dark.toggle();
+  window.myWindowAPI.setThemeSetting(!darkMode.value ? 'white' : 'dark');
 }
 
 function minimize() {
@@ -45,11 +46,11 @@ function closeApp() {
       <q-toolbar-title> Форма </q-toolbar-title>
 
       <q-toggle
+        :icon="!darkMode ? 'light_mode' : 'dark_mode'"
         v-model="darkMode"
-        class="q-mr-sm q-electron-drag--exception"
+        class="q-mr-md q-electron-drag--exception"
         dense
         color="grey-9"
-        label="Тёмный режим"
         @click="toggleDarkMode"
       />
 
