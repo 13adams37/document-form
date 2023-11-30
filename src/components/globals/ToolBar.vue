@@ -9,7 +9,9 @@ const darkMode = ref($q.dark.mode);
 
 function toggleDarkMode() {
   $q.dark.toggle();
-  window.myWindowAPI.setThemeSetting(!darkMode.value ? 'white' : 'dark');
+  if (process.env.MODE === 'electron') {
+    window.myWindowAPI.setThemeSetting(!darkMode.value ? 'white' : 'dark');
+  }
 }
 
 function minimize() {

@@ -3,9 +3,13 @@ import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
 
-window.myWindowAPI.getThemeSetting().then((res) => {
-  $q.dark.set(res === 'dark' ? true : false);
-});
+if (process.env.MODE === 'electron') {
+  window.myWindowAPI.getThemeSetting().then((res) => {
+    $q.dark.set(res === 'dark' ? true : false);
+  });
+} else {
+  $q.dark.set(true); // default, get from localStorage
+}
 </script>
 
 <template>
