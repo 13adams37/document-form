@@ -1,9 +1,6 @@
 <script setup>
-import { watch, ref, shallowRef } from 'vue';
-
-const emits = defineEmits(['update:modelValue']);
-const value = ref(modelValue);
-const newLabel = shallowRef();
+import { watch, ref } from 'vue';
+import { useQuasar } from 'quasar';
 
 const { modelValue } = defineProps({
   modelValue: [File, String],
@@ -11,11 +8,56 @@ const { modelValue } = defineProps({
   id: String,
 });
 
+const emits = defineEmits(['update:modelValue']);
+const value = ref(modelValue);
+const $q = useQuasar();
+
 const uploadFile = (e) => {
   const [file] = e.target.files;
   value.value = file;
-  newLabel.value = 'Загружен файл' + '\n' + value.value.name;
 };
+
+function onDragEnter(e) {
+  e.target.classList.add('drag-enter');
+}
+
+function onDragLeave(e) {
+  e.target.classList.remove('drag-enter');
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+}
+
+function onDrop(e) {
+  e.preventDefault();
+
+  if (e.dataTransfer.items) {
+    if ([...e.dataTransfer.items].length === 1) {
+      [...e.dataTransfer.items].forEach((item, i) => {
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+
+          if (file.type === 'application/json') {
+            value.value = file;
+          } else {
+            $q.notify({
+              message: 'Тип файла не подходит к форме',
+              color: 'none',
+            });
+          }
+        }
+      });
+    } else {
+      $q.notify({
+        message: 'Загрузите только один файл с формой',
+        color: 'none',
+      });
+    }
+  }
+
+  onDragLeave(e);
+}
 
 watch(value, () => {
   emits('update:modelValue', value.value);
@@ -23,11 +65,17 @@ watch(value, () => {
 </script>
 
 <template>
-  <div class="uploader" draggable="true">
-    <label class="uploader__label" :for="id">
-      {{ newLabel || label }}
+  <div
+    class="uploader"
+    @dragenter="onDragEnter"
+    @dragleave="onDragLeave"
+    @dragover="onDragOver"
+    @drop="onDrop"
+  >
+    <label class="uploader__label">
+      {{ label }}
 
-      <div class="uploader__content">
+      <div class="uploader__content" style="pointer-events: none">
         <svg
           class="uploader__icon"
           aria-hidden="true"
@@ -44,15 +92,13 @@ watch(value, () => {
           />
         </svg>
         <p class="uploader__text">
-          <span class="text-weight-bold">Нажмите для загрузки </span>
-          <!-- или перенесите файл  -->
-          <!-- on future -->
+          <span class="text-weight-bold">Нажмите для загрузки </span> или
+          перенесите файл
         </p>
       </div>
 
       <input
         class="hidden"
-        :id="id"
         type="file"
         accept="application/json"
         @change="uploadFile"
@@ -62,13 +108,18 @@ watch(value, () => {
 </template>
 
 <style lang="scss">
+.drag-enter {
+  outline-style: dashed;
+  overflow: auto;
+}
+
 .uploader {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   width: 100%;
-  position: relative;
+  position: absolute;
   margin-bottom: 20px;
 
   &__label {
