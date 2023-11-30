@@ -1,6 +1,7 @@
 <script setup>
 import DragDropUploader from 'components/ui/DragDropUploader.vue';
 import VariableInputs from 'src/components/ui/VariableInputs.vue';
+import validateForm from '/src/ts/formJsonValidation';
 import { useVariablesFillStore } from 'src/stores/variablesFillStore';
 import { ref, watch, onUnmounted } from 'vue';
 import { useQuasar } from 'quasar';
@@ -52,18 +53,17 @@ function readFile(files) {
 
   fr.onload = (e) => {
     const result = JSON.parse(e.target.result);
-    try {
+    if (validateForm(result)) {
       variables.value = addKeyValue(result.variables, 'value', '');
-      // FIXME: fix validation, set addkeyvalue to saver method
-    } catch (error) {
+      delete result['variables'];
+      formData.value = result;
+    } else {
       $q.notify({
         message: 'Загруженный файл не относится к форме',
         color: 'none',
       });
-      return false;
+      return;
     }
-    delete result['variables'];
-    formData.value = result;
   };
   fr.readAsText(files);
 }
