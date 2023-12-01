@@ -5,25 +5,33 @@ import { useQuasar } from 'quasar';
 import TabButtons from 'components/common/TabButtons.vue';
 import VTable from 'components/ui/VTable.vue';
 
-// props - formCreate.formName,
-//         formCreate.formComment,
-//          files
-//          tableData -> to pinia store
+const props = defineProps({
+  name: String,
+  comment: String,
+  paths: Array,
+});
 
 const formCreate = reactive({
     panelName: 'name',
     formName: '',
     formComment: '',
   }),
-  files = ref([]),
+  files = ref([]), //TODO: rewrite string[] saving to FileList then using File, not accessing file directly fs
   tabPanel = ref(null),
   $q = useQuasar(),
-  nameRef = ref(null);
-const allowedPanels = reactive(new Set());
-const { tableData } = useVariablesTableStore();
+  nameRef = ref(null),
+  allowedPanels = reactive(new Set()),
+  { tableData } = useVariablesTableStore(),
+  goPreviousTab = () => tabPanel.value.previous();
 
-// const goNextTab = () =>
-//   allowedPanels.has(formCreate.panelName) && tabPanel.value.next();
+if (props.name) {
+  formCreate.formName = props.name;
+  formCreate.formComment = props.comment;
+  files.value = props.paths;
+  //FIXME: add validation
+  allowedPanels.add('name');
+  allowedPanels.add('content');
+}
 
 function goNextTab() {
   const panelName = formCreate.panelName;
@@ -42,8 +50,6 @@ function goNextTab() {
   }
 }
 
-const goPreviousTab = () => tabPanel.value.previous();
-
 function save() {
   function getTableData() {
     var varArray = [];
@@ -53,7 +59,14 @@ function save() {
 
   function getPaths() {
     var pathsArray = [];
-    files.value.forEach((file) => pathsArray.push(file.path));
+    // files.value.forEach((file) => pathsArray.push(file));
+
+    files.value.forEach((file) =>
+      pathsArray.push({
+        name: file.name,
+        path: file.path,
+      })
+    );
     return pathsArray;
   }
 
