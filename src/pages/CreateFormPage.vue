@@ -6,12 +6,10 @@ import TabButtons from 'components/common/TabButtons.vue';
 import VTable from 'components/ui/VTable.vue';
 
 const props = defineProps({
-  formName: String,
-  formComment: String,
-  formFiles: Array,
+  name: String,
+  comment: String,
+  paths: Array,
 });
-
-console.log(props);
 
 const formCreate = reactive({
     panelName: 'name',
@@ -26,15 +24,11 @@ const formCreate = reactive({
   { tableData } = useVariablesTableStore(),
   goPreviousTab = () => tabPanel.value.previous();
 
-watch(files, () => {
-  console.log(files.value);
-});
-
-if (props.formName && props.formName) {
-  formCreate.formName = props.formName;
-  formCreate.formComment = props.formComment;
-  files.value = props.formFiles;
-
+if (props.name) {
+  formCreate.formName = props.name;
+  formCreate.formComment = props.comment;
+  files.value = props.paths;
+  //FIXME: add validation
   allowedPanels.add('name');
   allowedPanels.add('content');
 }
@@ -73,8 +67,6 @@ function save() {
         path: file.path,
       })
     );
-    console.log('pathsarray', pathsArray);
-    console.log(JSON.stringify(pathsArray));
     return pathsArray;
   }
 
