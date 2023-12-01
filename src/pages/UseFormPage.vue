@@ -13,11 +13,9 @@ const formData = ref(null);
 const { variables } = useVariablesFillStore();
 
 function replaceVariables() {
+  console.log('patcher', formData.value);
   window.myWindowAPI
-    .variablesFilePatcher(
-      JSON.stringify(variables.value),
-      JSON.stringify(formData.value.paths)
-    )
+    .variablesFilePatcher(JSON.stringify(formData.value))
     .then((result) => {
       if (result) {
         $q.notify({
@@ -40,22 +38,16 @@ function replaceVariables() {
     });
 }
 
-function addKeyValue(list, key, value) {
-  var temp = list;
-  temp.forEach((element) => {
-    element[key] = value;
-  });
-  return temp;
-}
-
 function readFile(files) {
   const fr = new FileReader();
 
   fr.onload = (e) => {
     const result = JSON.parse(e.target.result);
+    console.log('rezz', files);
     if (validateForm(result)) {
-      variables.value = addKeyValue(result.variables, 'value', '');
-      delete result['variables'];
+      variables.value = result.variables;
+      // console.log(variables.value);
+      // delete result['variables'];
       formData.value = result;
     } else {
       $q.notify({
@@ -81,7 +73,6 @@ onUnmounted(() => {
   <q-page class="q-mx-md" style="word-break: break-word">
     <div class="column">
       <transition name="slide" mode="out-in">
-        <!-- :duration="{ enter: 100, leave: 1000 }" -->
         <div v-if="!formData" class="full-width">
           <h3 class="text-center">Выберите форму</h3>
           <DragDropUploader

@@ -1,17 +1,18 @@
-interface IVariable {
+export interface IVariables {
   name: string;
   text: string;
+  value: string;
 }
 
-interface IPath {
+export interface IPath {
   name: string;
   path: string;
 }
 
-interface IForm {
+export interface IForm {
   name: string;
   comment: string;
-  variables: IVariable[];
+  variables: IVariables[];
   paths: IPath[];
 }
 
@@ -34,11 +35,14 @@ export default function validateForm(obj: IForm): boolean {
     typeof obj.comment === 'string' &&
     Array.isArray(obj.variables) &&
     obj.variables.every(
-      (variable: IVariable) =>
+      (variable: IVariables) =>
         typeof variable === 'object' &&
         typeof variable.name === 'string' &&
         typeof variable.text === 'string' &&
-        Object.keys(variable).every((k) => k === 'name' || k === 'text')
+        typeof variable.value === 'string' &&
+        Object.keys(variable).every(
+          (k) => k === 'name' || k === 'text' || k === 'value'
+        )
     ) &&
     Array.isArray(obj.paths) &&
     obj.paths.every(

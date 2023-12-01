@@ -12,11 +12,13 @@ const textRef = ref(null);
 const defaultItem = ref({
   name: '',
   text: '',
+  value: '',
 });
 
 const editedItem = ref({
   name: '',
   text: '',
+  value: '',
 });
 
 const { tableData } = useVariablesTableStore();
