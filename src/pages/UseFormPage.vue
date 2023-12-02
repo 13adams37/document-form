@@ -1,10 +1,10 @@
 <script setup>
-import DragDropUploader from 'components/ui/DragDropUploader.vue';
-import VariableInputs from 'src/components/ui/VariableInputs.vue';
-import validateForm from '/src/ts/formJsonValidation';
 import { useVariablesFillStore } from 'src/stores/variablesFillStore';
 import { ref, watch, onUnmounted } from 'vue';
 import { useQuasar } from 'quasar';
+import DragDropUploader from 'components/ui/DragDropUploader.vue';
+import VariableInputs from 'src/components/ui/VariableInputs.vue';
+import validateForm from '/src/ts/formJsonValidation';
 
 const $q = useQuasar();
 
@@ -13,27 +13,23 @@ const formData = ref(null);
 const { variables } = useVariablesFillStore();
 
 function replaceVariables() {
-  console.log('patcher', formData.value);
   window.myWindowAPI
     .variablesFilePatcher(JSON.stringify(formData.value))
     .then((result) => {
       if (result) {
         $q.notify({
           message: 'Файл успешно сохранён',
-          color: 'none',
         });
       } else {
         $q.notify({
           message: 'Ошибка при сохранении',
-          color: 'none',
         });
       }
     })
     .catch((err) => {
       console.log(err);
       $q.notify({
-        message: 'Непредвиденная ошибка при сохранении',
-        color: 'none',
+        message: 'Ошибка при сохранении,\nфайл возможно защищён от записи',
       });
     });
 }
@@ -43,16 +39,12 @@ function readFile(files) {
 
   fr.onload = (e) => {
     const result = JSON.parse(e.target.result);
-    console.log('rezz', files);
     if (validateForm(result)) {
       variables.value = result.variables;
-      // console.log(variables.value);
-      // delete result['variables'];
       formData.value = result;
     } else {
       $q.notify({
         message: 'Загруженный файл не относится к форме',
-        color: 'none',
       });
       return;
     }
