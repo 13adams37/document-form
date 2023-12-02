@@ -1,9 +1,9 @@
 <script setup>
 import { ref, watch } from 'vue';
+import { useVariablesTableStore } from 'src/stores/variablesTableStore';
 import CreateFormPage from './CreateFormPage.vue';
 import validateForm from '/src/ts/formJsonValidation';
 import DragDropUploader from 'components/ui/DragDropUploader.vue';
-import { useVariablesTableStore } from 'src/stores/variablesTableStore';
 
 const uploadedFile = ref(null);
 const formData = ref(null);
@@ -23,7 +23,6 @@ function readFile(files) {
     } else {
       $q.notify({
         message: 'Загруженный файл не относится к форме',
-        color: 'none',
       });
       return;
     }
