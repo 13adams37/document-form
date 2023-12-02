@@ -22,13 +22,6 @@ const routes = [
     children: [{ path: '', component: () => import('pages/UseFormPage.vue') }],
   },
   {
-    path: '/EditUsedFormPage',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/EditUsedFormPage.vue') },
-    ],
-  },
-  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
