@@ -1,10 +1,10 @@
 <script setup>
-import DragDropUploader from 'components/ui/DragDropUploader.vue';
-import VariableInputs from 'src/components/ui/VariableInputs.vue';
-import validateForm from '/src/ts/formJsonValidation';
 import { useVariablesFillStore } from 'src/stores/variablesFillStore';
 import { ref, watch, onUnmounted } from 'vue';
 import { useQuasar } from 'quasar';
+import DragDropUploader from 'components/ui/DragDropUploader.vue';
+import VariableInputs from 'src/components/ui/VariableInputs.vue';
+import validateForm from '/src/ts/formJsonValidation';
 
 const $q = useQuasar();
 
@@ -14,38 +14,24 @@ const { variables } = useVariablesFillStore();
 
 function replaceVariables() {
   window.myWindowAPI
-    .variablesFilePatcher(
-      JSON.stringify(variables.value),
-      JSON.stringify(formData.value.paths)
-    )
+    .variablesFilePatcher(JSON.stringify(formData.value))
     .then((result) => {
       if (result) {
         $q.notify({
           message: 'Файл успешно сохранён',
-          color: 'none',
         });
       } else {
         $q.notify({
           message: 'Ошибка при сохранении',
-          color: 'none',
         });
       }
     })
     .catch((err) => {
       console.log(err);
       $q.notify({
-        message: 'Непредвиденная ошибка при сохранении',
-        color: 'none',
+        message: 'Ошибка при сохранении,\nфайл возможно защищён от записи',
       });
     });
-}
-
-function addKeyValue(list, key, value) {
-  var temp = list;
-  temp.forEach((element) => {
-    element[key] = value;
-  });
-  return temp;
 }
 
 function readFile(files) {
@@ -54,13 +40,11 @@ function readFile(files) {
   fr.onload = (e) => {
     const result = JSON.parse(e.target.result);
     if (validateForm(result)) {
-      variables.value = addKeyValue(result.variables, 'value', '');
-      delete result['variables'];
+      variables.value = result.variables;
       formData.value = result;
     } else {
       $q.notify({
         message: 'Загруженный файл не относится к форме',
-        color: 'none',
       });
       return;
     }
@@ -81,7 +65,6 @@ onUnmounted(() => {
   <q-page class="q-mx-md" style="word-break: break-word">
     <div class="column">
       <transition name="slide" mode="out-in">
-        <!-- :duration="{ enter: 100, leave: 1000 }" -->
         <div v-if="!formData" class="full-width">
           <h3 class="text-center">Выберите форму</h3>
           <DragDropUploader

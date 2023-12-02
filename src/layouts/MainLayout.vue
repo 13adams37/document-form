@@ -24,12 +24,6 @@ const linksList = [
     icon: 'description',
     to: '/UseFormPage',
   },
-  {
-    title: 'Изменить',
-    caption: 'Измение содержания',
-    icon: 'edit_document',
-    to: '/EditUsedFormPage',
-  },
   // tms link
 ];
 

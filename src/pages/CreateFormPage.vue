@@ -2,6 +2,11 @@
 import { reactive, ref, watch, onUnmounted } from 'vue';
 import { useVariablesTableStore } from 'src/stores/variablesTableStore';
 import { useQuasar } from 'quasar';
+import {
+  pick as _pick,
+  map as _map,
+  partialRight as _partialRight,
+} from 'lodash';
 import TabButtons from 'components/common/TabButtons.vue';
 import VTable from 'components/ui/VTable.vue';
 
@@ -43,7 +48,6 @@ function goNextTab() {
   } else if (panelName === 'content') {
     $q.notify({
       message: 'Нет данных',
-      color: 'none',
     });
   } else {
     throw new Error('Unknown tab.');
@@ -51,31 +55,12 @@ function goNextTab() {
 }
 
 function save() {
-  function getTableData() {
-    var varArray = [];
-    tableData.forEach((data) => varArray.push(data));
-    return varArray;
-  } // need to rework
-
-  function getPaths() {
-    var pathsArray = [];
-    // files.value.forEach((file) => pathsArray.push(file));
-
-    files.value.forEach((file) =>
-      pathsArray.push({
-        name: file.name,
-        path: file.path,
-      })
-    );
-    return pathsArray;
-  }
-
   const data = {
     name: formCreate.formName,
     comment: formCreate.formComment,
-    variables: getTableData(),
-    paths: getPaths(),
-  }; //rework var and paths Arrays
+    variables: tableData,
+    paths: files.value.map((file) => _pick(file, ['name', 'path'])),
+  };
 
   if (process.env.MODE === 'electron') {
     window.myWindowAPI
@@ -87,12 +72,10 @@ function save() {
         if (result) {
           $q.notify({
             message: 'Файл успешно сохранён',
-            color: 'none',
           });
         } else {
           $q.notify({
             message: 'Ошибка при сохранении',
-            color: 'none',
           });
         }
       })
@@ -100,7 +83,6 @@ function save() {
         console.log(err);
         $q.notify({
           message: 'Непредвиденная ошибка при сохранении',
-          color: 'none',
         });
       });
   }
