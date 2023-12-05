@@ -1,5 +1,32 @@
 // app global css in SCSS form
+// override quasar defaults
 .q-notify__center {
   text-align: center;
   white-space: break-spaces;
+}
+
+.q-dialog__message {
+  word-break: break-word;
+}
+
+// scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  overflow: hidden;
+}
+
+.body--dark::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-right: 4px #333333 solid;
+  background-clip: padding-box;
+}
+
+.body--light::-webkit-scrollbar-thumb {
+  background: $light-drawer;
+  border-right: 4px $light-drawer solid;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-track {
+  margin-top: 50px;
 }
