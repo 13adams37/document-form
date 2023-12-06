@@ -1,51 +1,33 @@
 <script setup>
 import { reactive, ref, watch, onUnmounted } from 'vue';
-import { useVariablesTableStore } from 'src/stores/variablesTableStore';
-import { useQuasar } from 'quasar';
-import {
-  pick as _pick,
-  map as _map,
-  partialRight as _partialRight,
-} from 'lodash';
+import { useFormDataStore } from 'src/stores/formDataStore';
+import { Loading, useQuasar } from 'quasar';
+import { pick as _pick, map as _map } from 'lodash';
 import TabButtons from 'components/common/TabButtons.vue';
 import VTable from 'components/ui/VTable.vue';
+import validateForm from 'src/ts/formJsonValidation';
 
-const props = defineProps({
-  name: String,
-  comment: String,
-  paths: Array,
-});
+//TODO: rewrite string[] saving to FileList then using File, not accessing file directly fs
 
-const formCreate = reactive({
-    panelName: 'name',
-    formName: '',
-    formComment: '',
-  }),
-  files = ref([]), //TODO: rewrite string[] saving to FileList then using File, not accessing file directly fs
+const panelName = ref('name'),
   tabPanel = ref(null),
   $q = useQuasar(),
   nameRef = ref(null),
   allowedPanels = reactive(new Set()),
-  { tableData } = useVariablesTableStore(),
+  formStore = useFormDataStore(),
   goPreviousTab = () => tabPanel.value.previous();
 
-if (props.name) {
-  formCreate.formName = props.name;
-  formCreate.formComment = props.comment;
-  files.value = props.paths;
-  //FIXME: add validation
+if (validateForm(formStore.$state) && formStore.name) {
   allowedPanels.add('name');
   allowedPanels.add('content');
 }
 
 function goNextTab() {
-  const panelName = formCreate.panelName;
-
-  if (allowedPanels.has(panelName)) {
+  if (allowedPanels.has(panelName.value)) {
     tabPanel.value.next();
-  } else if (panelName === 'name') {
+  } else if (panelName.value === 'name') {
     nameRef.value.validate();
-  } else if (panelName === 'content') {
+  } else if (panelName.value === 'content') {
     $q.notify({
       message: 'Нет данных',
     });
@@ -56,18 +38,15 @@ function goNextTab() {
 
 function save() {
   const data = {
-    name: formCreate.formName,
-    comment: formCreate.formComment,
-    variables: tableData,
-    paths: files.value.map((file) => _pick(file, ['name', 'path'])),
+    name: formStore.name,
+    comment: formStore.comment,
+    variables: formStore.variables,
+    paths: formStore.paths.map((file) => _pick(file, ['name', 'path'])),
   };
 
   if (process.env.MODE === 'electron') {
     window.myWindowAPI
-      .saveFile(
-        JSON.stringify(data),
-        formCreate.formName.trim().split(' ').join('')
-      )
+      .saveFile(JSON.stringify(data), formStore.name.trim().split(' ').join(''))
       .then((result) => {
         if (result) {
           $q.notify({
@@ -88,9 +67,9 @@ function save() {
   }
 }
 
-watch(tableData, () => {
-  if (tableData.length) {
-    tableData.forEach((value) => {
+watch(formStore.variables, () => {
+  if (formStore.variables.length) {
+    formStore.variables.forEach((value) => {
       value.name && value.text
         ? allowedPanels.add('content')
         : allowedPanels.delete('content');
@@ -101,7 +80,7 @@ watch(tableData, () => {
 });
 
 onUnmounted(() => {
-  useVariablesTableStore().$reset();
+  useFormDataStore().$reset();
 });
 </script>
 
@@ -109,7 +88,7 @@ onUnmounted(() => {
   <q-page>
     <div class="q-mx-md">
       <q-tabs
-        v-model="formCreate.panelName"
+        v-model="panelName"
         dense
         align="justify"
         narrow-indicator
@@ -138,7 +117,7 @@ onUnmounted(() => {
     </div>
 
     <div class="justify-center">
-      <q-tab-panels ref="tabPanel" v-model="formCreate.panelName" animated>
+      <q-tab-panels ref="tabPanel" v-model="panelName" animated>
         <q-tab-panel
           id="namePanel"
           class="column items-center overflow-hidden"
@@ -149,7 +128,7 @@ onUnmounted(() => {
             name="name"
             label="Название формы"
             ref="nameRef"
-            v-model="formCreate.formName"
+            v-model="formStore.name"
             :rules="[(val) => !!val || 'Поле обязательно']"
             @update:model-value="
               (value) =>
@@ -161,7 +140,7 @@ onUnmounted(() => {
 
           <q-input
             label="Комментарий"
-            v-model="formCreate.formComment"
+            v-model="formStore.comment"
             outlined
             autogrow
           />
@@ -180,7 +159,7 @@ onUnmounted(() => {
 
         <q-tab-panel class="column items-center overflow-hidden" name="path">
           <q-file
-            v-model="files"
+            v-model="formStore.paths"
             label="Выберите файлы"
             outlined
             multiple
@@ -189,7 +168,7 @@ onUnmounted(() => {
           />
 
           <q-btn
-            v-if="files.length > 0"
+            v-if="formStore.paths.length > 0"
             class="q-mt-md text-weight-bold"
             label="Сохранить"
             @click="save"
