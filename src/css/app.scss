@@ -22,8 +22,8 @@
 }
 
 .body--light::-webkit-scrollbar-thumb {
-  background: $light-drawer;
-  border-right: 4px $light-drawer solid;
+  background: rgba(100, 100, 100, 0.4);
+  border-right: 4px rgba(100, 100, 100, 0.4) solid;
   background-clip: padding-box;
 }
 

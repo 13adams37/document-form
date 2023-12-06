@@ -58,7 +58,7 @@ const pageLinks = ref(linksList);
     <q-page-sticky
       v-if="$route.path !== '/'"
       position="bottom-right"
-      :offset="[18, 18]"
+      :offset="[10, 10]"
     >
       <q-btn fab icon="home" class="title__bar" to="/" />
     </q-page-sticky>
