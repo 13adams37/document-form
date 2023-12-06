@@ -84,14 +84,25 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
 
     const elementsToPatch = getElementsToPatch(formData.variables);
 
+    const patchTheDocument = async (
+      data: Buffer | string,
+      elementsToPatch: PatchDocumentOptions
+    ) => await patchDocument(data, elementsToPatch);
+
     for (const document of formData.paths) {
-      await patchDocument(fs.readFileSync(document.path), elementsToPatch).then(
-        (doc) => {
-          fs.writeFileSync(
-            `${folderPath}\\${path.parse(document.path).base}`,
-            doc
-          ); // catch exception not needed
-        }
+      let patchedDocxTemplate = await patchTheDocument(
+        fs.readFileSync(document.path),
+        elementsToPatch
+      );
+      for (let i = 0; i < 3; i++) {
+        patchedDocxTemplate = await patchTheDocument(
+          Buffer.from(patchedDocxTemplate),
+          elementsToPatch
+        );
+      }
+      fs.writeFileSync(
+        `${folderPath}\\${path.parse(document.path).base}`,
+        patchedDocxTemplate
       );
     }
 

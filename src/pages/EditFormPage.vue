@@ -15,7 +15,6 @@ function readFile(files) {
   fr.onload = (e) => {
     const result = JSON.parse(e.target.result);
     if (validateForm(result)) {
-      console.log(result);
       formData.$patch(result);
       router.push({
         path: '/CreateFormPage',
