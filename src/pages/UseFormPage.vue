@@ -75,13 +75,16 @@ onUnmounted(() => {
         </div>
 
         <div v-else class="column items-center">
-          <h3 class="text-center">{{ formData.name }}</h3>
-          <span class="text-center text-body2 q-mb-md" style="white-space: pre">
+          <h3 class="text-center text-body2">{{ formData.name }}</h3>
+          <span
+            class="text-center text-caption q-mb-md"
+            style="white-space: pre"
+          >
             {{ formData.comment }}
           </span>
           <VariableInputs />
           <q-btn
-            class="text-weight-bold q-mt-md"
+            class="text-weight-bold q-mb-lg"
             label="Продолжить"
             @click="replaceVariables()"
           />
