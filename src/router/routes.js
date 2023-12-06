@@ -7,8 +7,13 @@ const routes = [
   {
     path: '/CreateFormPage',
     component: () => import('layouts/MainLayout.vue'),
+    // props: true,
     children: [
-      { path: '', component: () => import('pages/CreateFormPage.vue') },
+      {
+        path: '',
+        component: () => import('pages/CreateFormPage.vue'),
+        props: true,
+      },
     ],
   },
   {

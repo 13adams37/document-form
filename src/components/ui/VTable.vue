@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { useVariablesTableStore } from 'stores/variablesTableStore';
+import { useFormDataStore } from 'src/stores/formDataStore';
 
 const $q = useQuasar();
 const show_dialog = ref(false);
@@ -21,7 +21,8 @@ const editedItem = ref({
   value: '',
 });
 
-const { tableData } = useVariablesTableStore();
+const formStore = useFormDataStore();
+const tableData = formStore.variables;
 
 const columns = [
   {
