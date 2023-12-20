@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref, watch, onUnmounted } from 'vue';
 import { useFormDataStore } from 'src/stores/formDataStore';
-import { Loading, useQuasar } from 'quasar';
+import { useQuasar } from 'quasar';
 import { pick as _pick, map as _map } from 'lodash';
 import TabButtons from 'components/common/TabButtons.vue';
 import VTable from 'components/ui/VTable.vue';
