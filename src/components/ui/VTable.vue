@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, getCurrentInstance, onMounted, onUnmounted } from 'vue';
 import { useQuasar } from 'quasar';
 import { useFormDataStore } from 'src/stores/formDataStore';
+import Sortable from 'sortablejs';
 
 const $q = useQuasar();
 const show_dialog = ref(false);
@@ -23,8 +24,16 @@ const editedItem = ref({
 
 const formStore = useFormDataStore();
 const tableData = formStore.variables;
+const instance = getCurrentInstance().proxy;
+let sortable;
 
 const columns = [
+  {
+    name: 'drag-handle',
+    label: '',
+    align: 'left',
+    field: 'drag-handle',
+  },
   {
     name: 'name',
     required: true,
@@ -45,6 +54,28 @@ const columns = [
     field: 'actions',
   },
 ];
+
+function moveItemInArray(array, fromIndex, toIndex) {
+  function clamp(value, max) {
+    return Math.max(0, Math.min(max, value));
+  }
+
+  const from = clamp(fromIndex, array.length - 1);
+  const to = clamp(toIndex, array.length - 1);
+
+  if (from === to) {
+    return;
+  }
+
+  const target = array[from];
+  const delta = to < from ? -1 : 1;
+
+  for (let i = from; i !== to; i += delta) {
+    array[i] = array[i + delta];
+  }
+
+  array[to] = target;
+}
 
 function addRow() {
   nameRef.value.validate();
@@ -94,6 +125,21 @@ function close() {
     editedIndex.value = -1;
   }, 300);
 }
+
+onMounted(() => {
+  const tableBody = instance.$el.querySelector('.q-table > tbody');
+  sortable = Sortable.create(tableBody, {
+    handle: '.drag-handle',
+    animation: 150,
+    onUpdate({ oldIndex, newIndex }) {
+      moveItemInArray(tableData, oldIndex, newIndex);
+    },
+  });
+});
+
+onUnmounted(() => {
+  sortable.destroy();
+});
 </script>
 
 <template>
@@ -109,7 +155,7 @@ function close() {
       no-data-label="Нет данных"
       hide-pagination
     >
-      <template v-slot:top>
+      <template #top>
         <q-btn
           class="text-weight-bold q-pa-sm"
           dense
@@ -161,30 +207,37 @@ function close() {
         </div>
       </template>
 
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td key="name" :props="props">
-            {{ props.row.name }}
-            <q-popup-edit v-model="props.row.name">
-              <q-input v-model="props.row.name" dense autofocus autogrow />
-            </q-popup-edit>
-          </q-td>
-          <q-td key="text" :props="props">
-            {{ props.row.text }}
-            <q-popup-edit v-model="props.row.text">
-              <q-input v-model="props.row.text" dense autofocus autogrow />
-            </q-popup-edit>
-          </q-td>
-          <q-td key="actions" :props="props">
-            <q-btn
-              class="q-mr-xs"
-              @click="editItem(props.row)"
-              size="sm"
-              icon="edit"
-            />
-            <q-btn icon="delete" @click="deleteItem(props.row)" size="sm" />
-          </q-td>
-        </q-tr>
+      <template #body-cell-drag-handle="props">
+        <q-td :props="props">
+          <q-icon name="drag_handle" class="drag-handle" />
+        </q-td>
+      </template>
+      <template #body-cell-name="props">
+        <q-td key="name" :props="props">
+          {{ props.row.name }}
+          <q-popup-edit v-model="props.row.name">
+            <q-input v-model="props.row.name" dense autofocus autogrow />
+          </q-popup-edit>
+        </q-td>
+      </template>
+      <template #body-cell-text="props">
+        <q-td key="text" :props="props">
+          {{ props.row.text }}
+          <q-popup-edit v-model="props.row.text">
+            <q-input v-model="props.row.text" dense autofocus autogrow />
+          </q-popup-edit>
+        </q-td>
+      </template>
+      <template #body-cell-actions="props">
+        <q-td key="actions" :props="props">
+          <q-btn
+            class="q-mr-xs"
+            @click="editItem(props.row)"
+            size="sm"
+            icon="edit"
+          />
+          <q-btn icon="delete" @click="deleteItem(props.row)" size="sm" />
+        </q-td>
       </template>
     </q-table>
   </div>
@@ -207,5 +260,10 @@ tr > th.text-center {
 tr > td.text-center {
   white-space: break-spaces;
   word-break: break-all;
+}
+
+.drag-handle {
+  cursor: move;
+  cursor: -webkit-grabbing;
 }
 </style>
