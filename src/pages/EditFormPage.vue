@@ -35,8 +35,8 @@ watch(uploadedFile, () => {
 </script>
 
 <template>
-  <q-page class="q-mx-md" style="word-break: break-word">
-    <div class="full-width">
+  <q-page class="q-mx-md column" style="word-break: break-word">
+    <div>
       <h3 class="text-center">Выберите форму</h3>
       <DragDropUploader
         v-model="uploadedFile"
@@ -49,7 +49,7 @@ watch(uploadedFile, () => {
 
 <style scoped>
 h3 {
-  word-break: break-word;
-  text-align: center;
+  font-size: min(max(1rem, 8vw), 3rem);
+  line-height: normal;
 }
 </style>
