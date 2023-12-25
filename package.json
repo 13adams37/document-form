@@ -16,6 +16,7 @@
     "@electron/remote": "^2.0.12",
     "@quasar/extras": "^1.16.4",
     "@types/lodash": "^4.14.202",
+    "@vueuse/core": "^10.7.0",
     "docx": "^8.2.3",
     "lodash": "^4.17.21",
     "pinia": "^2.0.11",

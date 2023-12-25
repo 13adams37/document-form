@@ -8,7 +8,7 @@ const step = ref(1);
 
 <template>
   <q-page class="q-mx-md column">
-    <div>
+    <div class="column items-center">
       <h3 class="q-my-md">Приложение создания и использования форм</h3>
 
       <q-stepper

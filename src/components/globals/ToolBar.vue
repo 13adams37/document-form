@@ -56,9 +56,11 @@ function closeApp() {
         @click="toggleDarkMode"
       />
 
-      <q-btn dense flat icon="minimize" @click="minimize" />
-      <q-btn dense flat icon="crop_square" @click="toggleMaximize" />
-      <q-btn dense flat icon="close" @click="closeApp" />
+      <div v-if="typeof $q.platform.is.electron === undefined">
+        <q-btn dense flat icon="minimize" @click="minimize" />
+        <q-btn dense flat icon="crop_square" @click="toggleMaximize" />
+        <q-btn dense flat icon="close" @click="closeApp" />
+      </div>
     </q-toolbar>
   </q-header>
 </template>

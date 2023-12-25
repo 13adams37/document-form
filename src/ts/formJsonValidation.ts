@@ -46,11 +46,7 @@ export default function validateForm(obj: IForm): boolean {
     ) &&
     Array.isArray(obj.paths) &&
     obj.paths.every(
-      (path: IPath) =>
-        typeof path === 'object' &&
-        typeof path.name === 'string' &&
-        typeof path.path === 'string' &&
-        Object.keys(path).every((k) => k === 'name' || k === 'path')
+      (path: IPath) => typeof path === 'object' && typeof path.name === 'string'
     )
   );
 }

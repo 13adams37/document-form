@@ -3,6 +3,7 @@ import { reactive, ref, watch, onUnmounted } from 'vue';
 import { useFormDataStore } from 'src/stores/formDataStore';
 import { useQuasar } from 'quasar';
 import { pick as _pick, map as _map } from 'lodash';
+import { useFileSystemAccess } from '@vueuse/core';
 import TabButtons from 'components/common/TabButtons.vue';
 import VTable from 'components/ui/VTable.vue';
 import validateForm from 'src/ts/formJsonValidation';
@@ -16,6 +17,18 @@ const panelName = ref('name'),
   allowedPanels = reactive(new Set()),
   formStore = useFormDataStore(),
   goPreviousTab = () => tabPanel.value.previous();
+
+const res = useFileSystemAccess({
+  types: [
+    {
+      description: 'JSON',
+      accept: {
+        'application/json': ['.json'],
+      },
+    },
+  ],
+  excludeAcceptAllOption: true,
+});
 
 if (validateForm(formStore.$state) && formStore.name) {
   allowedPanels.add('name');
@@ -64,6 +77,9 @@ function save() {
           message: 'Непредвиденная ошибка при сохранении',
         });
       });
+  } else {
+    res.data.value = JSON.stringify(data);
+    res.saveAs({ suggestedName: data.name });
   }
 }
 
@@ -109,7 +125,7 @@ onUnmounted(() => {
               : true
           "
           name="path"
-          label="Путь"
+          label="Файлы"
         />
       </q-tabs>
 

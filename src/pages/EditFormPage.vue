@@ -1,13 +1,15 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useFormDataStore } from 'src/stores/formDataStore';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 import validateForm from '/src/ts/formJsonValidation';
 import DragDropUploader from 'components/ui/DragDropUploader.vue';
-import { useRouter } from 'vue-router';
 
 const uploadedFile = ref(null);
 const formData = useFormDataStore();
 const router = useRouter();
+const $q = useQuasar();
 
 function readFile(files) {
   const fr = new FileReader();
