@@ -8,7 +8,13 @@ if (process.env.MODE === 'electron') {
     $q.dark.set(res === 'dark' ? true : false);
   });
 } else {
-  $q.dark.set(true); // default, TODO: get from localStorage
+  const localDark = window.localStorage.getItem('dark');
+  if (localDark === null) {
+    window.localStorage.setItem('dark', true);
+    $q.dark.set(true);
+  } else {
+    $q.dark.set(localDark === 'true');
+  }
 }
 </script>
 

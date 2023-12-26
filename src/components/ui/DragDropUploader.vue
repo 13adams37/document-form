@@ -15,6 +15,7 @@ const $q = useQuasar();
 const uploadFile = (e) => {
   const [file] = e.target.files;
   value.value = file;
+  e.target.value = '';
 };
 
 function onDragEnter(e) {

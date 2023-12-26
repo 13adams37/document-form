@@ -11,6 +11,8 @@ function toggleDarkMode() {
   $q.dark.toggle();
   if (process.env.MODE === 'electron') {
     window.myWindowAPI.setThemeSetting(!darkMode.value ? 'white' : 'dark');
+  } else {
+    window.localStorage.setItem('dark', darkMode.value);
   }
 }
 
@@ -56,9 +58,11 @@ function closeApp() {
         @click="toggleDarkMode"
       />
 
-      <q-btn dense flat icon="minimize" @click="minimize" />
-      <q-btn dense flat icon="crop_square" @click="toggleMaximize" />
-      <q-btn dense flat icon="close" @click="closeApp" />
+      <div v-if="$q.platform.is.electron === true">
+        <q-btn dense flat icon="minimize" @click="minimize" />
+        <q-btn dense flat icon="crop_square" @click="toggleMaximize" />
+        <q-btn dense flat icon="close" @click="closeApp" />
+      </div>
     </q-toolbar>
   </q-header>
 </template>

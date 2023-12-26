@@ -1,10 +1,9 @@
 import { FileFilter, contextBridge, ipcRenderer } from 'electron';
 import { BrowserWindow, dialog } from '@electron/remote';
+import { IForm, IPath } from '../src/ts/formJsonValidation';
+import filePatcher from 'src/ts/filePatcher';
 import * as fs from 'fs';
-import * as path from 'path';
-import { patchDocument } from 'docx';
-import { PatchType, TextRun, PatchDocumentOptions, IPatch } from 'docx';
-import { IForm, IVariables } from '../src/ts/formJsonValidation';
+// import * as path from 'path';
 
 function getFilePath(fileName: string, filters: FileFilter[]) {
   return dialog.showSaveDialog(null!, {
@@ -55,18 +54,6 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
 
     let folderPath: string = '';
 
-    function getElementsToPatch(element: IVariables[]): PatchDocumentOptions {
-      const patches: { [key: string]: IPatch } = {};
-      element.forEach((patch) => {
-        patches[patch.name] = {
-          type: PatchType.PARAGRAPH,
-          children: [new TextRun(patch.value)],
-        };
-      });
-
-      return { patches, keepOriginalStyles: true };
-    }
-
     await dialog
       .showOpenDialog(null!, {
         properties: ['openFile', 'openDirectory'],
@@ -82,34 +69,27 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
       return false;
     }
 
-    const elementsToPatch = getElementsToPatch(formData.variables);
-
-    const patchTheDocument = async (
-      data: Buffer | string,
-      elementsToPatch: PatchDocumentOptions
-    ) => await patchDocument(data, elementsToPatch);
-
-    for (const document of formData.paths) {
-      let patchedDocxTemplate = await patchTheDocument(
-        fs.readFileSync(document.path),
-        elementsToPatch
-      );
-      for (let i = 0; i < 3; i++) {
-        patchedDocxTemplate = await patchTheDocument(
-          Buffer.from(patchedDocxTemplate),
-          elementsToPatch
-        );
+    function getFilesFromFs(fileList: IPath[]) {
+      const outputFiles: File[] = [];
+      for (const file of fileList) {
+        outputFiles.push(new File([fs.readFileSync(file.path)], file.name));
       }
-      fs.writeFileSync(
-        `${folderPath}\\${path.parse(document.path).base}`,
-        patchedDocxTemplate
-      );
+      return outputFiles;
+    }
+
+    const patchedTemplates = filePatcher(
+      formData,
+      getFilesFromFs(formData.paths)
+    );
+
+    for (const item of await patchedTemplates) {
+      fs.writeFileSync(`${folderPath}\\${item.name}`, item.data);
     }
 
     fs.writeFileSync(
       `${folderPath}\\${formData.name}_used.json`,
       JSON.stringify(formData)
-    ); // catch exception not needed
+    );
 
     return true;
   },
