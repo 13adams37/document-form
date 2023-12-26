@@ -11,6 +11,8 @@ function toggleDarkMode() {
   $q.dark.toggle();
   if (process.env.MODE === 'electron') {
     window.myWindowAPI.setThemeSetting(!darkMode.value ? 'white' : 'dark');
+  } else {
+    window.localStorage.setItem('dark', darkMode.value);
   }
 }
 

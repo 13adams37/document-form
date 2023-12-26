@@ -1,19 +1,22 @@
 <script setup>
 import { useVariablesFillStore } from 'src/stores/variablesFillStore';
-import { ref, watch, onUnmounted } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import { QFile, useQuasar } from 'quasar';
 import DragDropUploader from 'components/ui/DragDropUploader.vue';
 import VariableInputs from 'src/components/ui/VariableInputs.vue';
 import validateForm from '/src/ts/formJsonValidation';
+import filePatcher from 'src/ts/filePatcher';
+import JSZip from 'jszip';
+import saveAs from 'file-saver';
 
 const $q = useQuasar();
 const uploadedFile = ref(null);
-const uploadedContent = ref([]); // user`s uploaded templates
+const uploadedContent = ref([]); // user`s uploaded templates (docx)
 const filesToUpload = ref([]);
+const uploadedResult = ref(null);
 const uploderDialog = ref(null);
 const formData = ref(null);
 const { variables } = useVariablesFillStore();
-var uploadedResult = ref(null);
 
 function replaceVariables() {
   if (process.env.MODE === 'electron') {
@@ -37,13 +40,38 @@ function replaceVariables() {
         });
       });
   } else {
-    console.log('web');
+    filePatcher(formData.value, uploadedContent.value)
+      .then((result) => {
+        console.log(result);
+        var zip = new JSZip();
+        const folder = zip.folder(formData.value.name);
+        for (const res of result) {
+          console.log(res);
+          folder.file(res.name, res.data);
+        }
+        folder.file(
+          `${formData.value.name}.json`,
+          JSON.stringify(formData.value)
+        );
+        zip.generateAsync({ type: 'blob' }).then(function (content) {
+          saveAs(content, `${formData.value.name}.zip`);
+        });
+        $q.notify({
+          message: 'Файл успешно сохранён',
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        $q.notify({
+          message: 'Ошибка при работе сохранении',
+        });
+      });
   }
 }
 
 function readFile(files) {
   const fr = new FileReader();
-  console.log(Date.now());
+
   fr.onload = (e) => {
     const result = JSON.parse(e.target.result);
     uploadedResult.value = result;
@@ -57,7 +85,6 @@ function readFile(files) {
           for (const item of result.paths) {
             filesToUpload.value.push({ name: item.name, status: false });
           }
-          // filesToUpload.value.push({ name: 'testname.json', status: false });
           uploderDialog.value.toggle();
         }
       }
@@ -72,7 +99,6 @@ function readFile(files) {
 }
 
 function validateUpload() {
-  console.log('validate', uploadedContent.value, filesToUpload.value);
   for (const item of filesToUpload.value) {
     if (uploadedContent.value.some((e) => e.name == item.name)) {
       item.status = true;
@@ -84,11 +110,6 @@ function validateUpload() {
     formData.value = uploadedResult.value;
   }
 }
-
-watch(uploadedResult, () => {
-  console.log(uploadedResult.value);
-  console.log(Date.now());
-});
 
 onUnmounted(() => {
   useVariablesFillStore().$reset();
