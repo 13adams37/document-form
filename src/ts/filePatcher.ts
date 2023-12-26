@@ -4,9 +4,11 @@ import { PatchType, TextRun, PatchDocumentOptions, IPatch } from 'docx';
 import { Buffer } from 'buffer';
 
 export default async function filePatcher(formData: IForm, files: File[]) {
-  // get formData as IForm, files: File[]
-  console.log('patcher', formData, files);
-  const patchedFiles: object[] = [];
+  interface IPatchedFiles {
+    name: string;
+    data: Buffer | Uint8Array;
+  }
+  const patchedFiles: IPatchedFiles[] = [];
 
   function getElementsToPatch(element: IVariables[]): PatchDocumentOptions {
     const patches: { [key: string]: IPatch } = {};
@@ -35,18 +37,7 @@ export default async function filePatcher(formData: IForm, files: File[]) {
       );
     }
     patchedFiles.push({ name: file.name, data: patchedDocxTemplate });
-    // fs.writeFileSync(
-    //   `${folderPath}\\${path.parse(document.path).base}`,
-    //   patchedDocxTemplate
-    // );
   }
-
-  // fs.writeFileSync(
-  //   `${folderPath}\\${formData.name}_used.json`,
-  //   JSON.stringify(formData)
-  // ); // catch exception not needed
-
-  // return true;
 
   return patchedFiles;
 }

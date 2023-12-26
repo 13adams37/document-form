@@ -8,8 +8,6 @@ import TabButtons from 'components/common/TabButtons.vue';
 import VTable from 'components/ui/VTable.vue';
 import validateForm from 'src/ts/formJsonValidation';
 
-//TODO: rewrite string[] saving to FileList then using File, not accessing file directly fs
-
 const panelName = ref('name'),
   tabPanel = ref(null),
   $q = useQuasar(),

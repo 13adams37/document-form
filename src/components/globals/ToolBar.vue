@@ -58,7 +58,7 @@ function closeApp() {
         @click="toggleDarkMode"
       />
 
-      <div v-if="typeof $q.platform.is.electron === undefined">
+      <div v-if="$q.platform.is.electron === true">
         <q-btn dense flat icon="minimize" @click="minimize" />
         <q-btn dense flat icon="crop_square" @click="toggleMaximize" />
         <q-btn dense flat icon="close" @click="closeApp" />

@@ -42,11 +42,9 @@ function replaceVariables() {
   } else {
     filePatcher(formData.value, uploadedContent.value)
       .then((result) => {
-        console.log(result);
         var zip = new JSZip();
         const folder = zip.folder(formData.value.name);
         for (const res of result) {
-          console.log(res);
           folder.file(res.name, res.data);
         }
         folder.file(
@@ -63,7 +61,7 @@ function replaceVariables() {
       .catch((err) => {
         console.log(err);
         $q.notify({
-          message: 'Ошибка при работе сохранении',
+          message: 'Ошибка при сохранении',
         });
       });
   }
@@ -77,13 +75,19 @@ function readFile(files) {
     uploadedResult.value = result;
     if (validateForm(result)) {
       variables.value = result.variables;
-      if (result.paths.some((obj) => obj.hasOwnProperty('path'))) {
+
+      if (
+        result.paths.every((obj) => obj.hasOwnProperty('path')) &&
+        $q.platform.is.electron
+      ) {
         formData.value = result;
       } else {
         filesToUpload.value = [];
         if (result.paths.length) {
           for (const item of result.paths) {
-            filesToUpload.value.push({ name: item.name, status: false });
+            if (!item.hasOwnProperty('path')) {
+              filesToUpload.value.push({ name: item.name, status: false });
+            }
           }
           uploderDialog.value.toggle();
         }
@@ -107,6 +111,15 @@ function validateUpload() {
     }
   }
   if (filesToUpload.value.every((item) => item.status)) {
+    if ($q.platform.is.electron) {
+      for (const item of uploadedContent.value) {
+        uploadedResult.value.paths.find((element) => {
+          if (element.name === item.name) {
+            element.path = item.path;
+          }
+        });
+      }
+    }
     formData.value = uploadedResult.value;
   }
 }
@@ -149,11 +162,12 @@ onUnmounted(() => {
                 <div
                   v-if="
                     uploadedContent.length !== 0 &&
-                    filesToUpload.length != uploadedContent.length
+                    (filesToUpload.length != uploadedContent.length ||
+                      !filesToUpload.every((e) => e.status))
                   "
                   class="text-red-8"
                 >
-                  Загружены не все файлы, или их больше
+                  Загружены не все файлы
                 </div>
                 <q-file
                   v-model="uploadedContent"
