@@ -81,7 +81,7 @@ function readFile(files) {
         $q.platform.is.electron
       ) {
         formData.value = result;
-      } else {
+      } else if ($q.platform.is.electron) {
         filesToUpload.value = [];
         if (result.paths.length) {
           for (const item of result.paths) {
@@ -91,6 +91,11 @@ function readFile(files) {
           }
           uploderDialog.value.toggle();
         }
+      } else {
+        for (const item of result.paths) {
+          filesToUpload.value.push({ name: item.name, status: false });
+        }
+        uploderDialog.value.toggle();
       }
     } else {
       $q.notify({
