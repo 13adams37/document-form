@@ -10,7 +10,8 @@
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build"
+    "build": "quasar build",
+    "deploy": "push-dir --dir=dist/spa --remote=origin --branch=gh-pages"
   },
   "dependencies": {
     "@electron/remote": "^2.0.12",
@@ -42,7 +43,8 @@
     "eslint-plugin-vue": "^9.0.0",
     "lodash": "^4.17.21",
     "postcss": "^8.4.14",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "push-dir": "^0.4.1"
   },
   "engines": {
     "node": "^20 || ^18 || ^16 || ^14.19",
