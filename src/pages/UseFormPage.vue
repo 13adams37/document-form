@@ -75,14 +75,15 @@ function readFile(files) {
     uploadedResult.value = result;
     if (validateForm(result)) {
       variables.value = result.variables;
+      filesToUpload.value = [];
+      uploadedContent.value = [];
 
       if (
         result.paths.every((obj) => obj.hasOwnProperty('path')) &&
         $q.platform.is.electron
       ) {
         formData.value = result;
-      } else {
-        filesToUpload.value = [];
+      } else if ($q.platform.is.electron) {
         if (result.paths.length) {
           for (const item of result.paths) {
             if (!item.hasOwnProperty('path')) {
@@ -91,6 +92,11 @@ function readFile(files) {
           }
           uploderDialog.value.toggle();
         }
+      } else {
+        for (const item of result.paths) {
+          filesToUpload.value.push({ name: item.name, status: false });
+        }
+        uploderDialog.value.toggle();
       }
     } else {
       $q.notify({
