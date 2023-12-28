@@ -182,7 +182,7 @@ onUnmounted(() => {
                         (editedIndex > -1 &&
                           tableData[editedIndex].name == val) ||
                         tableData.every((row) => row.name != val) ||
-                        'Такая переменная уже существует',
+                        `Переменная '${val}' уже существует`,
                     ]"
                     autogrow
                   />
