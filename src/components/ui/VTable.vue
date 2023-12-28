@@ -88,7 +88,6 @@ function addRow() {
     }
     close();
   }
-  // validate dubs variables
 }
 
 function deleteItem(item) {
@@ -177,7 +176,13 @@ onUnmounted(() => {
                     ref="nameRef"
                     v-model="editedItem.name"
                     label="Название переменной"
-                    :rules="[(val) => !!val || 'Поле обязательно']"
+                    :rules="[
+                      (val) => !!val || 'Поле обязательно',
+                      (val) =>
+                        tableData[editedIndex].name == val ||
+                        tableData.every((row) => row.name != val) ||
+                        'Такая переменная уже существует',
+                    ]"
                     autogrow
                   />
 
@@ -208,16 +213,13 @@ onUnmounted(() => {
       </template>
 
       <template #body-cell-drag-handle="props">
-        <q-td :props="props">
+        <q-td key="drag-handle" :props="props">
           <q-icon name="drag_handle" class="drag-handle" />
         </q-td>
       </template>
       <template #body-cell-name="props">
         <q-td key="name" :props="props">
           {{ props.row.name }}
-          <q-popup-edit v-model="props.row.name">
-            <q-input v-model="props.row.name" dense autofocus autogrow />
-          </q-popup-edit>
         </q-td>
       </template>
       <template #body-cell-text="props">
