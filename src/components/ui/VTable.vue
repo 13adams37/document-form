@@ -179,7 +179,8 @@ onUnmounted(() => {
                     :rules="[
                       (val) => !!val || 'Поле обязательно',
                       (val) =>
-                        tableData[editedIndex].name == val ||
+                        (editedIndex > -1 &&
+                          tableData[editedIndex].name == val) ||
                         tableData.every((row) => row.name != val) ||
                         'Такая переменная уже существует',
                     ]"
