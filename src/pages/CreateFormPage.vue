@@ -175,6 +175,7 @@ onUnmounted(() => {
           <q-file
             v-model="formStore.paths"
             label="Выберите файлы"
+            accept=".docx"
             outlined
             multiple
             append
