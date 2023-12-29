@@ -1,43 +1,75 @@
-# Form
+<h1 align="center">
+Форма
+<br>
 
-## Based on Quasar framework. Works as Electron desktop application, future on web and mobile
+</h1>
 
-Application to ease form filling
+<h4 align="center">Приложение создания и использования форм документов Mircosoft Word. <br> Приложение работает в <a href="https://13adams37.github.io/document-form/#/">Web</a> и <a href="https://github.com/13adams37/document-form/releases">Electron</a>.</h4>
 
-## Install the dependencies
+## Возможности
 
-```bash
-yarn install
-```
+- Тёмная/светлая тема
+- Поддержка разных платформ
+  - Web, Windows.
+- Возможности:
+  - Создание;
+  - Редактирование;
+  - Использование;
+  - Повторное использование формы.
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+## Как использовать
 
-```bash
-quasar dev
-# or
-yarn quasar dev
-# for electron
-yarn quasar dev -m electron
-```
-
-### Lint the files
-
-```bash
-yarn lint
-```
-
-### Format the files
+Если вы собираетсь разрабатывать, запустить локально или собрать приложение самому. В коммандной строке:
 
 ```bash
-yarn format
+# Склонируйте репозиторий
+$ git clone https://github.com/13adams37/document-form
+
+# Перейдите в папку с проектом
+$ cd document-form
+
+# Установите зависимости
+$ yarn install
+
+# Запуск веб-приложения в режиме разработки
+$ yarn quasar dev
+
+# Запуск Electron приложения в режиме разработки
+$ yarn quasar dev -m electron
+
+# Запуск сборки веб-приложения (путь dist/spa)
+$ yarn quasar build
+
+# Запуск Electron приложения (путь dist/electron)
+$ yarn quasar build -m electron
+
+# Запуск локального веб-приложения
+$ yarn quasar serve dist/spa
 ```
 
-### Build the app for production
+## Загрузка Electron приложения
 
-```bash
-quasar build
-# or
-yarn quasar build
-# for electron
-yarn quasar build -m electron
-```
+Вы можете [скачать](https://github.com/13adams37/document-form/releases) последнюю версию формы для Windows.
+
+## Использования
+
+Приложение использует следующие пакеты:
+
+- [Vue](https://vuejs.org/)
+- [Electron](https://www.electronjs.org/)
+- [Node.js](https://nodejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [Quasar](https://quasar.dev)
+- [Vueuse](https://vueuse.org/)
+- [file-saver](https://github.com/eligrey/FileSaver.js)
+- [docx](https://docx.js.org/#/)
+- [jszip](https://stuk.github.io/jszip/)
+- [lodash](https://lodash.com/)
+- [vuedraggable](https://github.com/SortableJS/Vue.Draggable)
+- [postcss](https://postcss.org/)
+
+---
+
+> GitHub [@13adams37](https://github.com/13adams37) &nbsp;&middot;&nbsp;
+> Telegram [@13adams37](https://t.me/KAktycc1337)
