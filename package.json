@@ -1,7 +1,7 @@
 {
-  "name": "saturnproject",
+  "name": "document-form",
   "version": "0.0.1",
-  "description": "Проект Форма",
+  "description": "Форма документов",
   "productName": "Форма",
   "author": "13adams37",
   "private": true,

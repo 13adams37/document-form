@@ -3,7 +3,6 @@ import { BrowserWindow, dialog } from '@electron/remote';
 import { IForm, IPath } from '../src/ts/formJsonValidation';
 import filePatcher from 'src/ts/filePatcher';
 import * as fs from 'fs';
-// import * as path from 'path';
 
 function getFilePath(fileName: string, filters: FileFilter[]) {
   return dialog.showSaveDialog(null!, {

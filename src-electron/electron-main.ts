@@ -38,7 +38,7 @@ function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'icons/saturn.ico'), // tray icon
+    icon: path.resolve(__dirname, 'icons/icon.ico'),
     width,
     height,
     useContentSize: true,
@@ -48,8 +48,6 @@ function createWindow() {
       sandbox: false,
       webSecurity: true,
       nodeIntegration: true,
-      // contextIsolation: true,
-      // More info: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD!),
     },
   });

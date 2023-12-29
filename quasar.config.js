@@ -59,7 +59,7 @@ module.exports = configure(function (/* ctx */) {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      publicPath: '/saturnProjectQuasar',
+      publicPath: '/document-form',
       // analyze: true,
       // env: {},
       // rawDefine: {}
@@ -189,8 +189,6 @@ module.exports = configure(function (/* ctx */) {
 
       builder: {
         // https://www.electron.build/configuration/configuration
-
-        appId: 'saturnproject',
       },
     },
 
